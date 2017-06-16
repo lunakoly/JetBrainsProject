@@ -6,46 +6,56 @@
     android:layout_height="match_parent"
     tools:context="ru.luna_koly.jetbrainsproject.MainActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+    <Space
+        android:id="@+id/spacer"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-        <Button
-            android:text="T"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+    <Button
+        android:id="@+id/bt_inventory"
+        android:text="I"
+        android:layout_above="@id/spacer"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/square_button_state_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
-        <Button
-            android:text="T"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+    <Button
+        android:id="@+id/bt_play"
+        android:text="P"
+        android:layout_above="@id/bt_inventory"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/square_button_state_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
-        <Button
-            android:text="T"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
+    <Button
+        android:id="@+id/bt_diary"
+        android:text="D"
+        android:layout_below="@id/spacer"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/square_button_state_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
-        <Button
-            android:text="T"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@color/colorAccent"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/bt_settings"
+        android:text="S"
+        android:layout_below="@id/bt_diary"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/square_button_state_selector"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
 </RelativeLayout>
