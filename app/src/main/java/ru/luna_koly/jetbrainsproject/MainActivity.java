@@ -44,9 +44,9 @@ public class MainActivity extends NoTitleBarActivity {
 
         // start bg animations
         final int[] backgrounds = {
-                R.drawable.basic_wallpaper_1,
-                R.drawable.basic_wallpaper_2,
-                R.drawable.basic_wallpaper_3
+                R.drawable.small_basic_wallpaper_1,
+                R.drawable.small_basic_wallpaper_2,
+                R.drawable.small_basic_wallpaper_3
         };
 
         final Handler handler = new Handler();
