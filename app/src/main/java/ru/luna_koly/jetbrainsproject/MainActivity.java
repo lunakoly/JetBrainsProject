@@ -24,6 +24,7 @@ public class MainActivity extends NoTitleBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         // init bg
         final ImageSwitcher bg = (ImageSwitcher) findViewById(R.id.bg);

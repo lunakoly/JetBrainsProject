@@ -16,6 +16,6 @@ public class NoTitleBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Hide title bar
-        setContentView(R.layout.activity_main);
+        setTheme(R.style.AppTheme_NoActionBar);
     }
 }
