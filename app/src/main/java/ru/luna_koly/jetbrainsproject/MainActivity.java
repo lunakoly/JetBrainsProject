@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import ru.luna_koly.jetbrainsproject.activityTemplates.NoTitleBarActivity;
 
 public class MainActivity extends NoTitleBarActivity {
+    final private long wallpaperTime = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +56,9 @@ public class MainActivity extends NoTitleBarActivity {
             public void run() {
                 int randomNum = random.nextInt(backgrounds.length);
                 bg.setImageResource(backgrounds[randomNum]);
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, wallpaperTime);
             }
-        }, 2000);
+        }, wallpaperTime);
 
     }
 

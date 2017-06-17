@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JetBrainsProject</string>
+    <integer name="fade_duration">2000</integer>
 </resources>
