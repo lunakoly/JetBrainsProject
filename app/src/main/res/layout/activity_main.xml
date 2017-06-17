@@ -26,9 +26,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bt_inventory"
-        android:text="I"
+        android:src="@drawable/small_icon_inventory"
         android:layout_above="@id/spacer"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -37,9 +37,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bt_play"
-        android:text="P"
+        android:src="@drawable/small_icon_play"
         android:layout_above="@id/bt_inventory"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -48,9 +48,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bt_diary"
-        android:text="D"
+        android:src="@drawable/small_icon_diary"
         android:layout_below="@id/spacer"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -59,9 +59,9 @@
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/bt_settings"
-        android:text="S"
+        android:src="@drawable/small_icon_gear"
         android:layout_below="@id/bt_diary"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
