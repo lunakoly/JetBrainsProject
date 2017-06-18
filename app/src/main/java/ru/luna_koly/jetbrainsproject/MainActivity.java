@@ -23,10 +23,17 @@ import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
     final private long wallpaperTime = 10000;
+    final private long moveAnimTime = 500;
 
+    private LinearLayout fragmentHolder;
     private boolean isFragmentHolderOpen = false;
     private FragmentHolderState currentFragmentHolderState = FragmentHolderState.SETTINGS;
     private FragmentHolderState fragmentHolderState;
+
+    private Animation leftIn, leftOut;
+
+    ImageButton play, inventory, diary, settings;
+    View settingsFragment, diasryFragment, inventoryFragment;
 
 
     @Override
@@ -34,8 +41,19 @@ public class MainActivity extends NoTitleBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupFragmentHolder();
         setupButtonListeners();
         setupBGSwitcher();
+    }
+
+    private void setupFragmentHolder() {
+        fragmentHolder = (LinearLayout) findViewById(R.id.fragment_holder);
+
+        leftIn = AnimationUtils.loadAnimation(this, R.anim.move_left_in);
+        leftOut = AnimationUtils.loadAnimation(this, R.anim.move_left_out);
+
+        settingsFragment = findViewById(R.id.settings_fragment);
+        // TODO
     }
 
     private void setupBGSwitcher() {
@@ -77,20 +95,40 @@ public class MainActivity extends NoTitleBarActivity {
     }
 
     private void setupButtonListeners() {
-        ImageButton play = (ImageButton) findViewById(R.id.bt_play);
-        ImageButton inventory = (ImageButton) findViewById(R.id.bt_inventory);
-        ImageButton diary = (ImageButton) findViewById(R.id.bt_diary);
-        ImageButton settings = (ImageButton) findViewById(R.id.bt_settings);
+        play = (ImageButton) findViewById(R.id.bt_play);
+        inventory = (ImageButton) findViewById(R.id.bt_inventory);
+        diary = (ImageButton) findViewById(R.id.bt_diary);
+        settings = (ImageButton) findViewById(R.id.bt_settings);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentFragmentHolderState == FragmentHolderState.SETTINGS)
+                if (currentFragmentHolderState == FragmentHolderState.SETTINGS) {
                     triggerFragmentHolder();
-                else
-                    setFragmentHolderState(FragmentHolderState.SETTINGS);
+                    disableButtonsFor(moveAnimTime);
+                    return;
+                }
+
+                setFragmentHolderState(FragmentHolderState.SETTINGS);
             }
         });
+    }
+
+    private void disableButtonsFor(long delay) {
+        disableImageButtonFor(inventory, delay);
+        disableImageButtonFor(diary, delay);
+        disableImageButtonFor(settings, delay);
+    }
+
+    private void disableImageButtonFor(final ImageButton button, long delay) {
+        button.setEnabled(false);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                button.setEnabled(true);
+            }
+        }, delay);
     }
 
     private void triggerFragmentHolder() {
@@ -106,17 +144,20 @@ public class MainActivity extends NoTitleBarActivity {
     }
 
     private void openFragmentHolder() {
-
+        fragmentHolder.startAnimation(leftIn);
     }
 
     private void closeFragmentHolder() {
-
+        fragmentHolder.startAnimation(leftOut);
     }
 
     public void setFragmentHolderState(FragmentHolderState fragmentHolderState) {
         this.fragmentHolderState = fragmentHolderState;
 
-        // switch fragment
+        switch (fragmentHolderState) {
+            case SETTINGS:
+                settingsFragment.setEnabled(true);
+        }
     }
 
 

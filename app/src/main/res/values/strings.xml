@@ -8,6 +8,7 @@
     <string name="settings_menu_sound">Sound effects</string>
 
     <integer name="fade_duration">2000</integer>
+    <integer name="moveAnimTime">500</integer>
 
     <declare-styleable name="TypefaceButton">
         <attr name="typeface" format="string" />
