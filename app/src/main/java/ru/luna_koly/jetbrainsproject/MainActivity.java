@@ -1,5 +1,8 @@
 package ru.luna_koly.jetbrainsproject;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +18,9 @@ import android.widget.ViewSwitcher;
 import java.util.Random;
 
 import ru.luna_koly.jetbrainsproject.activityTemplates.NoTitleBarActivity;
+import ru.luna_koly.jetbrainsproject.fragments.DiaryFragment;
+import ru.luna_koly.jetbrainsproject.fragments.InventoryFragment;
+import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
     final private long wallpaperTime = 10000;
@@ -26,8 +32,11 @@ public class MainActivity extends NoTitleBarActivity {
 
     private Animation leftIn, leftOut;
 
-    ImageButton play, inventory, diary, settings;
-    View settingsFragment, diaryFragment, inventoryFragment;
+    private ImageButton play, inventory, diary, settings;
+    private FragmentManager fm;
+    private SettingsFragment settingsFragment;
+    private DiaryFragment diaryFragment;
+    private InventoryFragment inventoryFragment;
 
 
     @Override
@@ -46,13 +55,12 @@ public class MainActivity extends NoTitleBarActivity {
         leftIn = AnimationUtils.loadAnimation(this, R.anim.move_left_in);
         leftOut = AnimationUtils.loadAnimation(this, R.anim.move_left_out);
 
-        settingsFragment = findViewById(R.id.settings_fragment);
-        diaryFragment = findViewById(R.id.diary_fragment);
-        inventoryFragment = findViewById(R.id.inventory_fragment);
+        fm = getFragmentManager();
+        settingsFragment = (SettingsFragment) fm.findFragmentById(R.id.settings_fragment);
+        diaryFragment = (DiaryFragment) fm.findFragmentById(R.id.diary_fragment);
+        inventoryFragment = (InventoryFragment) fm.findFragmentById(R.id.inventory_fragment);
 
-        settingsFragment.setEnabled(false);
-        diaryFragment.setEnabled(false);
-        inventoryFragment.setEnabled(false);
+        showHideFragments(settingsFragment, diaryFragment, inventoryFragment);
     }
 
     private void setupBGSwitcher() {
@@ -103,9 +111,8 @@ public class MainActivity extends NoTitleBarActivity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentFragmentHolderState == FragmentHolderState.SETTINGS) {
+                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.SETTINGS) {
                     triggerFragmentHolder();
-                    return;
                 }
 
                 setFragmentHolderState(FragmentHolderState.SETTINGS);
@@ -115,9 +122,8 @@ public class MainActivity extends NoTitleBarActivity {
         diary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentFragmentHolderState == FragmentHolderState.DIARY) {
+                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.DIARY) {
                     triggerFragmentHolder();
-                    return;
                 }
 
                 setFragmentHolderState(FragmentHolderState.DIARY);
@@ -127,12 +133,19 @@ public class MainActivity extends NoTitleBarActivity {
         inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentFragmentHolderState == FragmentHolderState.INVENTORY) {
+                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.INVENTORY) {
                     triggerFragmentHolder();
-                    return;
                 }
 
                 setFragmentHolderState(FragmentHolderState.INVENTORY);
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -176,6 +189,20 @@ public class MainActivity extends NoTitleBarActivity {
         fragmentHolder.startAnimation(leftOut);
     }
 
+    private void showHideFragments(Fragment toShow, Fragment... toHide) {
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .show(toShow)
+                .commit();
+
+        for (Fragment f : toHide)
+            fm.beginTransaction()
+                    .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                    .hide(f)
+                    .commit();
+    }
+
     public void setFragmentHolderState(FragmentHolderState fragmentHolderState) {
         this.currentFragmentHolderState = fragmentHolderState;
 
@@ -183,19 +210,13 @@ public class MainActivity extends NoTitleBarActivity {
 
         switch (fragmentHolderState) {
             case SETTINGS:
-                settingsFragment.setEnabled(true);
-                diaryFragment.setEnabled(false);
-                inventoryFragment.setEnabled(false);
+                showHideFragments(settingsFragment, diaryFragment, inventoryFragment);
                 break;
             case DIARY:
-                settingsFragment.setEnabled(false);
-                diaryFragment.setEnabled(true);
-                inventoryFragment.setEnabled(false);
+                showHideFragments(diaryFragment, settingsFragment, inventoryFragment);
                 break;
             case INVENTORY:
-                settingsFragment.setEnabled(false);
-                diaryFragment.setEnabled(false);
-                inventoryFragment.setEnabled(true);
+                showHideFragments(inventoryFragment, diaryFragment, settingsFragment);
                 break;
         }
     }
