@@ -70,4 +70,19 @@
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
+    <LinearLayout
+        android:id="@+id/fragment_holder"
+        android:background="@drawable/main_menu_fragment"
+        android:layout_width="300dp"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/settings_fragment"
+            android:name="ru.luna_koly.jetbrainsproject.fragments.SettingsFragment"
+            tools:layout="@layout/main_menu_settings_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
 </RelativeLayout>

@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,15 +19,26 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import ru.luna_koly.jetbrainsproject.activityTemplates.NoTitleBarActivity;
+import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
     final private long wallpaperTime = 10000;
+
+    private boolean isFragmentHolderOpen = false;
+    private FragmentHolderState currentFragmentHolderState = FragmentHolderState.SETTINGS;
+    private FragmentHolderState fragmentHolderState;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupButtonListeners();
+        setupBGSwitcher();
+    }
+
+    private void setupBGSwitcher() {
         // init bg
         final ImageSwitcher bg = (ImageSwitcher) findViewById(R.id.bg);
         // set fade animation
@@ -35,13 +48,13 @@ public class MainActivity extends NoTitleBarActivity {
         bg.setOutAnimation(fadeOut);
 
         bg.setFactory(new ViewSwitcher.ViewFactory() {
-                public View makeView() {
-                    ImageView imageView = new ImageView(getApplicationContext());
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    imageView.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    return imageView;
-                }
-            }
+                          public View makeView() {
+                              ImageView imageView = new ImageView(getApplicationContext());
+                              imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                              imageView.setLayoutParams(new ImageSwitcher.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                              return imageView;
+                          }
+                      }
         );
 
         // start bg animations
@@ -51,6 +64,7 @@ public class MainActivity extends NoTitleBarActivity {
                 R.drawable.small_basic_wallpaper_3
         };
 
+        // run bg
         final Handler handler = new Handler();
         final Random random = new Random();
         handler.postDelayed(new Runnable() {
@@ -60,7 +74,54 @@ public class MainActivity extends NoTitleBarActivity {
                 handler.postDelayed(this, wallpaperTime);
             }
         }, wallpaperTime);
+    }
 
+    private void setupButtonListeners() {
+        ImageButton play = (ImageButton) findViewById(R.id.bt_play);
+        ImageButton inventory = (ImageButton) findViewById(R.id.bt_inventory);
+        ImageButton diary = (ImageButton) findViewById(R.id.bt_diary);
+        ImageButton settings = (ImageButton) findViewById(R.id.bt_settings);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragmentHolderState == FragmentHolderState.SETTINGS)
+                    triggerFragmentHolder();
+                else
+                    setFragmentHolderState(FragmentHolderState.SETTINGS);
+            }
+        });
+    }
+
+    private void triggerFragmentHolder() {
+        if (isFragmentHolderOpen) {
+            isFragmentHolderOpen = false;
+            closeFragmentHolder();
+            return;
+        }
+
+
+        isFragmentHolderOpen = true;
+        openFragmentHolder();
+    }
+
+    private void openFragmentHolder() {
+
+    }
+
+    private void closeFragmentHolder() {
+
+    }
+
+    public void setFragmentHolderState(FragmentHolderState fragmentHolderState) {
+        this.fragmentHolderState = fragmentHolderState;
+
+        // switch fragment
+    }
+
+
+    private enum FragmentHolderState {
+        SETTINGS, DIARY, INVENTORY
     }
 
 }

@@ -5,6 +5,7 @@
     <string name="button_play">P</string>
     <string name="button_diary">D</string>
     <string name="button_setting">S</string>
+    <string name="settings_menu_sound">Sound effects</string>
 
     <integer name="fade_duration">2000</integer>
 
