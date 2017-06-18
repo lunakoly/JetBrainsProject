@@ -7,7 +7,7 @@
     tools:context="ru.luna_koly.jetbrainsproject.MainActivity">
 
     <ImageView
-        android:src="@drawable/small_basic_wallpaper_1"
+        android:src="@drawable/small_wallpaper_1"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -71,6 +71,7 @@
         android:layout_height="60dp" />
 
     <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/fragment_holder"
         android:visibility="invisible"
         android:background="@drawable/main_menu_fragment"
@@ -81,6 +82,20 @@
             android:id="@+id/settings_fragment"
             android:name="ru.luna_koly.jetbrainsproject.fragments.SettingsFragment"
             tools:layout="@layout/main_menu_settings_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <fragment
+            android:id="@+id/diary_fragment"
+            android:name="ru.luna_koly.jetbrainsproject.fragments.DiaryFragment"
+            tools:layout="@layout/main_menu_diary_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <fragment
+            android:id="@+id/inventory_fragment"
+            android:name="ru.luna_koly.jetbrainsproject.fragments.InventoryFragment"
+            tools:layout="@layout/main_menu_inventory_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

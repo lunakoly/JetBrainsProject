@@ -1,14 +1,11 @@
 package ru.luna_koly.jetbrainsproject;
 
-import android.app.ActionBar.LayoutParams;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -16,10 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ViewSwitcher;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import ru.luna_koly.jetbrainsproject.activityTemplates.NoTitleBarActivity;
-import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
     final private long wallpaperTime = 10000;
@@ -28,12 +23,11 @@ public class MainActivity extends NoTitleBarActivity {
     private LinearLayout fragmentHolder;
     private boolean isFragmentHolderOpen = false;
     private FragmentHolderState currentFragmentHolderState = FragmentHolderState.SETTINGS;
-    private FragmentHolderState fragmentHolderState;
 
     private Animation leftIn, leftOut;
 
     ImageButton play, inventory, diary, settings;
-    View settingsFragment, diasryFragment, inventoryFragment;
+    View settingsFragment, diaryFragment, inventoryFragment;
 
 
     @Override
@@ -53,7 +47,12 @@ public class MainActivity extends NoTitleBarActivity {
         leftOut = AnimationUtils.loadAnimation(this, R.anim.move_left_out);
 
         settingsFragment = findViewById(R.id.settings_fragment);
-        // TODO
+        diaryFragment = findViewById(R.id.diary_fragment);
+        inventoryFragment = findViewById(R.id.inventory_fragment);
+
+        settingsFragment.setEnabled(false);
+        diaryFragment.setEnabled(false);
+        inventoryFragment.setEnabled(false);
     }
 
     private void setupBGSwitcher() {
@@ -79,7 +78,8 @@ public class MainActivity extends NoTitleBarActivity {
         final int[] backgrounds = {
                 R.drawable.small_basic_wallpaper_1,
                 R.drawable.small_basic_wallpaper_2,
-                R.drawable.small_basic_wallpaper_3
+                R.drawable.small_basic_wallpaper_3,
+                R.drawable.small_wallpaper_1
         };
 
         // run bg
@@ -105,11 +105,34 @@ public class MainActivity extends NoTitleBarActivity {
             public void onClick(View view) {
                 if (currentFragmentHolderState == FragmentHolderState.SETTINGS) {
                     triggerFragmentHolder();
-                    disableButtonsFor(moveAnimTime);
                     return;
                 }
 
                 setFragmentHolderState(FragmentHolderState.SETTINGS);
+            }
+        });
+
+        diary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragmentHolderState == FragmentHolderState.DIARY) {
+                    triggerFragmentHolder();
+                    return;
+                }
+
+                setFragmentHolderState(FragmentHolderState.DIARY);
+            }
+        });
+
+        inventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentFragmentHolderState == FragmentHolderState.INVENTORY) {
+                    triggerFragmentHolder();
+                    return;
+                }
+
+                setFragmentHolderState(FragmentHolderState.INVENTORY);
             }
         });
     }
@@ -132,6 +155,8 @@ public class MainActivity extends NoTitleBarActivity {
     }
 
     private void triggerFragmentHolder() {
+        disableButtonsFor(moveAnimTime);
+
         if (isFragmentHolderOpen) {
             isFragmentHolderOpen = false;
             closeFragmentHolder();
@@ -152,11 +177,26 @@ public class MainActivity extends NoTitleBarActivity {
     }
 
     public void setFragmentHolderState(FragmentHolderState fragmentHolderState) {
-        this.fragmentHolderState = fragmentHolderState;
+        this.currentFragmentHolderState = fragmentHolderState;
+
+        Log.d("holder", "" + fragmentHolderState);
 
         switch (fragmentHolderState) {
             case SETTINGS:
                 settingsFragment.setEnabled(true);
+                diaryFragment.setEnabled(false);
+                inventoryFragment.setEnabled(false);
+                break;
+            case DIARY:
+                settingsFragment.setEnabled(false);
+                diaryFragment.setEnabled(true);
+                inventoryFragment.setEnabled(false);
+                break;
+            case INVENTORY:
+                settingsFragment.setEnabled(false);
+                diaryFragment.setEnabled(false);
+                inventoryFragment.setEnabled(true);
+                break;
         }
     }
 
