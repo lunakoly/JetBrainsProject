@@ -35,15 +35,15 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
-        GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+        GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         initDefaultShaderProgram();
         Log.d(TAG, "Created & default shader program has been initialized");
 
         objects.add(MeshFactory.getExampleTriangle());
         objects.add(MeshFactory.getExampleRectangle());
 
-        camera.moveX(0.4f);
-        camera.setZoom(-0.9f);
+        //camera.moveX(0.4f);
+        //camera.setZoom(-0.9f);
     }
 
     @Override

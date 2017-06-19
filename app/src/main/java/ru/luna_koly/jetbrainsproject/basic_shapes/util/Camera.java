@@ -6,7 +6,7 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
 public class Camera {
     private float x, y, z;  // speed
-    private float zoom = 1;
+    private float zoom = 0;
 
 
     public Camera(float x, float y, float z) {
