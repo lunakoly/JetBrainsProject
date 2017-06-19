@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -27,6 +28,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private ArrayList<Shape> objects = new ArrayList<>();
 
 
+    private int uGlobalTime;
+
+
     public GameRenderer(Context context) {
         this.context = context;
     }
@@ -40,6 +44,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         initDefaultShaderProgram();
         Log.d(tag, "Created & default shader program has been initialized");
 
+        uGlobalTime = GLES20.glGetUniformLocation(
+                defaultShaderProgram.getCurrentProgram(), "uGlobalTime");
+
         //objects.add(MeshFactory.getExampleTriangle());
         objects.add(MeshFactory.getExampleRectangle());
     }
@@ -52,6 +59,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT /*| GLES20.GL_DEPTH_BUFFER_BIT*/);
+        GLES20.glUniform1f(uGlobalTime, new Date().getTime());
 
         for (Shape m : objects)
             m.draw();
