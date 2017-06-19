@@ -28,4 +28,14 @@ public class VertexFormatter {
 
         return vecs;
     }
+
+    public static float[] generateEmptyVertexArray(int amount) {
+        float[] vertices = new float[amount];
+
+        for (int i = 0; i < vertices.length; i++) {
+            vertices[i] = 0.0f;
+        }
+
+        return vertices;
+    }
 }

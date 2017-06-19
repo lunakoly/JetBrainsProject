@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import ru.luna_koly.jetbrainsproject.basic_shapes.Triangle;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
 
@@ -18,6 +17,8 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
  */
 
 public class GameRenderer implements GLSurfaceView.Renderer {
+    final static private String tag = "renderer";
+
     private static final String defaultVertexShaderCode =
             "attribute vec4 aVertexPosition;" +
                     "void main(void) {" +
@@ -41,9 +42,11 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         //GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         //GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 
-        initDefaultShaderProgram();
+        defaultProgram = initDefaultShaderProgram();
+        Log.d(tag, "Created & default shader program has been initialized");
 
-        objects.add(MeshFactory.getExampleTriangle());
+        //objects.add(MeshFactory.getExampleTriangle());
+        objects.add(MeshFactory.getExampleRectangle());
     }
 
     @Override
@@ -54,7 +57,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT /*| GLES20.GL_DEPTH_BUFFER_BIT*/);
-        Log.d("triangle", "CYCLE ");
 
         for (Mesh m : objects)
             m.draw();
@@ -73,14 +75,14 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, status, 0);
 
         if (status[0] == 0) {
-            Log.e("triangle", "Couldn't load " + type);
-            Log.e("triangle", GLES20.glGetShaderInfoLog(shader));
+            Log.e(tag, "Couldn't load " + type);
+            Log.e(tag, GLES20.glGetShaderInfoLog(shader));
             GLES20.glDeleteShader(shader);
             shader = 0;
         }
 
         if (shader == 0)
-            Log.e("triangle", "Loading shader trouble");
+            Log.e(tag, "Loading shader trouble");
 
         return shader;
     }
@@ -95,14 +97,14 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, status, 0);
 
         if (status[0] == 0) {
-            Log.e("triangle", "Couldn't load shader program");
-            Log.e("triangle", GLES20.glGetProgramInfoLog(program));
+            Log.e(tag, "Couldn't load shader program");
+            Log.e(tag, GLES20.glGetProgramInfoLog(program));
             GLES20.glDeleteProgram(program);
             program = 0;
         }
 
         if (program == 0)
-            Log.e("triangle", "Loading program trouble");
+            Log.e(tag, "Loading program trouble");
 
         return program;
     }

@@ -23,6 +23,7 @@ import ru.luna_koly.jetbrainsproject.fragments.InventoryFragment;
 import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
+    final private String tag = "main_activity";
     final private long wallpaperTime = 10000;
     final private long moveAnimTime = 500;
 
@@ -47,6 +48,8 @@ public class MainActivity extends NoTitleBarActivity {
         setupFragmentHolder();
         setupButtonListeners();
         setupBGSwitcher();
+
+        Log.d(tag, "Created");
     }
 
     private void setupFragmentHolder() {
