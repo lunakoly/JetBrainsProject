@@ -6,4 +6,6 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
 public interface Shape {
     void draw();
+    void externalDraw(int vertexPositionAttribute);
+    void recalculateVertices(Camera camera);
 }

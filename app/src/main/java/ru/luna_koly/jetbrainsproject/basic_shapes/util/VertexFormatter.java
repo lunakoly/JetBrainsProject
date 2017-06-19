@@ -1,5 +1,9 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
+import android.util.Log;
+
+import java.util.Arrays;
+
 /**
  * Created with love by iMac on 18.06.17.
  */
@@ -37,5 +41,31 @@ public class VertexFormatter {
         }
 
         return vertices;
+    }
+
+    public static float[] projectToCamera2D(Camera cam, float... vertices) {
+        float[] relative = new float[vertices.length];
+
+        for (int i = 0; i < vertices.length / 3; i++) {
+            relative[i * 3]     = vertices[i * 3]     + cam.getX();
+            relative[i * 3 + 1] = vertices[i * 3 + 1] + cam.getY();
+            relative[i * 3 + 2] = vertices[i * 3 + 2] + cam.getZ();
+        }
+
+        return relative;
+    }
+
+    public static float[] getTriad(int index, float... vertices) {
+        return Arrays.copyOfRange(vertices, index * 3, index * 3 + 3);
+    }
+
+    public static float[] getTriadOfPattern(float[] vertices, short[] pattern) {
+        float[] all = new float[pattern.length * 3];
+
+        for (int i = 0; i < pattern.length; i++) {
+            System.arraycopy(getTriad( pattern[i], vertices ), 0, all, i * 3, 3);
+        }
+
+        return all;
     }
 }

@@ -7,8 +7,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
@@ -18,11 +20,12 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
  */
 
 public class VertexQuad implements Shape {
+    private static final short[] drawOrder = {0, 1, 2, 2, 3, 0};
+
     private FloatBuffer vertexBuffer;
     private float[] vertices = new float[12];
 
-    private ShortBuffer orderBuffer;
-    private short[] drawOrder = {0, 1, 2, 1, 3, 2};
+    private int shaderProgram = -1;
 
 
     public VertexQuad(float[] vertices) {
@@ -31,54 +34,54 @@ public class VertexQuad implements Shape {
         else
             this.vertices = vertices;
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 6);
-        bb.order(ByteOrder.nativeOrder());
+        this.vertices = VertexFormatter.getTriadOfPattern(vertices, drawOrder);
+        genBuffer();
 
-        vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(vertices);
-        vertexBuffer.position(0);
-
-        bb = ByteBuffer.allocateDirect(drawOrder.length * 2);
-        bb.order(ByteOrder.nativeOrder());
-
-        orderBuffer = bb.asShortBuffer();
-        orderBuffer.put(drawOrder);
-        orderBuffer.position(0);
+        // set to default
+        shaderProgram = GameRenderer.getDefaultShaderProgram();
     }
 
     public VertexQuad(vec3 p1, vec3 p2, vec3 p3, vec3 p4) {
         this(VertexFormatter.getVertices(p1, p2, p3, p4));
     }
 
-    public FloatBuffer getVertexBuffer() {
-        return vertexBuffer;
+    public void setShaderProgram(int program) {
+        shaderProgram = program;
     }
 
-    public float[] getVertices() {
-        return vertices;
+    private void genBuffer() {
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4); // float size
+        bb.order(ByteOrder.nativeOrder());
+
+        vertexBuffer = bb.asFloatBuffer();
+        vertexBuffer.put(vertices);
+        vertexBuffer.position(0);
     }
 
-    public int getShaderProgram() {
-        // no shader -> GameRenderer.default
-        return GameRenderer.getDefaultShaderProgram();
+    @Override
+    public void recalculateVertices(Camera camera) {
+        vertices = VertexFormatter.projectToCamera2D(camera, vertices);
+        genBuffer();
+    }
+
+    @Override
+    public void externalDraw(int vertexPositionAttribute) {
+        GLES20.glVertexAttribPointer(vertexPositionAttribute, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, drawOrder.length);
     }
 
     @Override
     public void draw() {
-        int program = getShaderProgram();
-        GLES20.glUseProgram(program);
+        GLES20.glUseProgram(shaderProgram);
 
-        int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
+        Log.d("quad", "DRAWN " + Arrays.toString(vertices));
+
+        int vertexPositionAttribute = GLES20.glGetAttribLocation(shaderProgram, "aVertexPosition");
         GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
 
-        GLES20.glVertexAttribPointer(vertexPositionAttribute, 4, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-
-        Log.d("quad", "PRE_DRAWING");
-
-        GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP, drawOrder.length, GLES20.GL_UNSIGNED_SHORT, orderBuffer);
-        //GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, drawOrder.length);
+        externalDraw(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
 
-        Log.d("quad", "DRAWING");
+        Log.d("quad", "DRAWN_2");
     }
 }

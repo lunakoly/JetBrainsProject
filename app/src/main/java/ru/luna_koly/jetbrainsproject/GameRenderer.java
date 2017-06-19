@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
@@ -25,10 +26,8 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private static ShaderProgram defaultShaderProgram;
 
     private Context context;
+    Camera camera = new Camera(0, 0, 0);
     private ArrayList<Shape> objects = new ArrayList<>();
-
-
-    private int uGlobalTime;
 
 
     public GameRenderer(Context context) {
@@ -38,17 +37,13 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-        //GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-        //GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-
         initDefaultShaderProgram();
         Log.d(tag, "Created & default shader program has been initialized");
 
-        uGlobalTime = GLES20.glGetUniformLocation(
-                defaultShaderProgram.getCurrentProgram(), "uGlobalTime");
-
-        //objects.add(MeshFactory.getExampleTriangle());
+        objects.add(MeshFactory.getExampleTriangle());
         objects.add(MeshFactory.getExampleRectangle());
+
+        camera.moveX(0.5f);
     }
 
     @Override
@@ -58,8 +53,12 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl10) {
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT /*| GLES20.GL_DEPTH_BUFFER_BIT*/);
-        GLES20.glUniform1f(uGlobalTime, new Date().getTime());
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+
+        for (Shape m : objects)
+            m.recalculateVertices(camera);
+
+        Log.d(tag, "DRAWING");
 
         for (Shape m : objects)
             m.draw();
@@ -67,49 +66,6 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     public static int getDefaultShaderProgram() {
         return defaultShaderProgram.getCurrentProgram();
-    }
-
-    public static int loadShader(int type, String source) {
-        int shader = GLES20.glCreateShader(type);
-        GLES20.glShaderSource(shader, source);
-        GLES20.glCompileShader(shader);
-
-        int[] status = new int[1];
-        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, status, 0);
-
-        if (status[0] == 0) {
-            Log.e(tag, "Couldn't load " + type);
-            Log.e(tag, GLES20.glGetShaderInfoLog(shader));
-            GLES20.glDeleteShader(shader);
-            shader = 0;
-        }
-
-        if (shader == 0)
-            Log.e(tag, "Loading shader trouble");
-
-        return shader;
-    }
-
-    public static int loadProgram(int vertexShader, int fragmentShader) {
-        int program = GLES20.glCreateProgram();
-        GLES20.glAttachShader(program, fragmentShader);
-        GLES20.glAttachShader(program, vertexShader);
-        GLES20.glLinkProgram(program);
-
-        int[] status = new int[1];
-        GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, status, 0);
-
-        if (status[0] == 0) {
-            Log.e(tag, "Couldn't load shader program");
-            Log.e(tag, GLES20.glGetProgramInfoLog(program));
-            GLES20.glDeleteProgram(program);
-            program = 0;
-        }
-
-        if (program == 0)
-            Log.e(tag, "Loading program trouble");
-
-        return program;
     }
 
     private void initDefaultShaderProgram() {

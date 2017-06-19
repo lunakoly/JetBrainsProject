@@ -12,6 +12,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme_NoActionBar);     // hide title bar
 
         gameView = new GameSurfaceView(this);
         setContentView(gameView);

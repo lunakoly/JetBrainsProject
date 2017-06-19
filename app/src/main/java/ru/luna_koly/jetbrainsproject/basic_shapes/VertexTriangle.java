@@ -1,25 +1,27 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created with love by luna_koly on 18.06.17.
  */
 
 public class VertexTriangle implements Shape {
     private FloatBuffer vertexBuffer;
     private float[] vertices = new float[9];
+
+    private int shaderProgram = -1;
+
 
     public VertexTriangle(float[] vertices) {
         if (vertices.length != 9)
@@ -27,9 +29,22 @@ public class VertexTriangle implements Shape {
         else
             this.vertices = vertices;
 
-        Log.d("quad", "" + Arrays.toString(vertices));
+        genBuffer();
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
+        // set to default
+        shaderProgram = GameRenderer.getDefaultShaderProgram();
+    }
+
+    public VertexTriangle(vec3 p1, vec3 p2, vec3 p3) {
+        this(VertexFormatter.getVertices(p1, p2, p3));
+    }
+
+    public void setShaderProgram(int program) {
+        shaderProgram = program;
+    }
+
+    private void genBuffer() {
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4); // float size
         bb.order(ByteOrder.nativeOrder());
 
         vertexBuffer = bb.asFloatBuffer();
@@ -37,42 +52,26 @@ public class VertexTriangle implements Shape {
         vertexBuffer.position(0);
     }
 
-    public VertexTriangle(vec3 p1, vec3 p2, vec3 p3) {
-        this(VertexFormatter.getVertices(p1, p2, p3));
-//        vertices = VertexFormatter.getVertices(p1, p2, p3);
-//
-//        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
-//        bb.order(ByteOrder.nativeOrder());
-//
-//        vertexBuffer = bb.asFloatBuffer();
-//        vertexBuffer.put(vertices);
-//        vertexBuffer.position(0);
+    @Override
+    public void recalculateVertices(Camera camera) {
+        vertices = VertexFormatter.projectToCamera2D(camera, vertices);
+        genBuffer();
     }
 
-    public FloatBuffer getVertexBuffer() {
-        return vertexBuffer;
-    }
-
-    public float[] getVertices() {
-        return vertices;
-    }
-
-    public int getShaderProgram() {
-        // no shader -> GameRenderer.default
-        return GameRenderer.getDefaultShaderProgram();
+    @Override
+    public void externalDraw(int vertexPositionAttribute) {
+        GLES20.glVertexAttribPointer(vertexPositionAttribute, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length / 3);
     }
 
     @Override
     public void draw() {
-        int program = getShaderProgram();
-        GLES20.glUseProgram(program);
+        GLES20.glUseProgram(shaderProgram);
 
-        int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
+        int vertexPositionAttribute = GLES20.glGetAttribLocation(shaderProgram, "aVertexPosition");
         GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
 
-        GLES20.glVertexAttribPointer(vertexPositionAttribute, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length / 3);
+        externalDraw(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
     }
 }
