@@ -61,7 +61,7 @@
 
     <ImageButton
         android:id="@+id/bt_settings"
-        android:src="@drawable/small_icon_gear"
+        android:src="@drawable/small_icon_settings"
         android:layout_below="@id/bt_diary"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

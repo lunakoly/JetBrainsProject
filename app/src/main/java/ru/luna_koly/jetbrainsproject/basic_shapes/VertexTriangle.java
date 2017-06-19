@@ -1,10 +1,12 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
@@ -24,6 +26,8 @@ public class VertexTriangle implements Mesh {
             this.vertices = VertexFormatter.generateEmptyVertexArray(9);
         else
             this.vertices = vertices;
+
+        Log.d("quad", "" + Arrays.toString(vertices));
 
         ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
         bb.order(ByteOrder.nativeOrder());

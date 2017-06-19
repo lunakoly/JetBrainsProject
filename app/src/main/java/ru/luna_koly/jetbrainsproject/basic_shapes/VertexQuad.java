@@ -1,11 +1,13 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
@@ -30,7 +32,7 @@ public class VertexQuad implements Mesh {
         else
             this.vertices = vertices;
 
-        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 6);
         bb.order(ByteOrder.nativeOrder());
 
         vertexBuffer = bb.asFloatBuffer();
@@ -70,11 +72,14 @@ public class VertexQuad implements Mesh {
         int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
         GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
 
-
         GLES20.glVertexAttribPointer(vertexPositionAttribute, 4, GLES20.GL_FLOAT, false, 0, vertexBuffer);
 
-        GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.length, GLES20.GL_UNSIGNED_SHORT, orderBuffer);
+        Log.d("quad", "PRE_DRAWING");
+
+        GLES20.glDrawElements(GLES20.GL_TRIANGLE_STRIP, drawOrder.length, GLES20.GL_UNSIGNED_SHORT, orderBuffer);
         //GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, drawOrder.length);
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
+
+        Log.d("quad", "DRAWING");
     }
 }
