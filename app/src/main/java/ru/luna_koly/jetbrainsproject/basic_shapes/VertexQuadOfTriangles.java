@@ -3,13 +3,10 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 import android.opengl.GLES20;
 import android.util.Log;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
 
@@ -17,7 +14,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
  * Created by user on 6/19/17.
  */
 
-public class VertexQuadOfTriangles implements Mesh {
+public class VertexQuadOfTriangles implements Shape {
     private VertexTriangle[] triangles = new VertexTriangle[2];
 
     public VertexQuadOfTriangles(float[] vertices) {

@@ -1,6 +1,5 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
-import ru.luna_koly.jetbrainsproject.basic_shapes.VertexQuad;
 import ru.luna_koly.jetbrainsproject.basic_shapes.VertexQuadOfTriangles;
 import ru.luna_koly.jetbrainsproject.basic_shapes.VertexTriangle;
 
@@ -10,7 +9,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.VertexTriangle;
 
 public class MeshFactory {
 
-    private static Mesh exampleRectangle;
+    private static Shape exampleRectangle;
 
     public static VertexTriangle getExampleTriangle() {
         float[] vertices = {                // counterclockwise
@@ -22,7 +21,7 @@ public class MeshFactory {
         return new VertexTriangle(vertices);
     }
 
-    public static Mesh getExampleRectangle() {
+    public static Shape getExampleRectangle() {
         float[] vertices = {                // counterclockwise
                 -0.5f, +0.5f, 0.0f,
                 -0.5f, -0.5f, 0.0f,

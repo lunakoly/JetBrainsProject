@@ -1,5 +1,6 @@
 package ru.luna_koly.jetbrainsproject;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 
 /**
  * Created with love by iMac on 18.06.17.
@@ -19,22 +21,15 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
 public class GameRenderer implements GLSurfaceView.Renderer {
     final static private String tag = "renderer";
 
-    private static final String defaultVertexShaderCode =
-            "attribute vec4 aVertexPosition;" +
-                    "void main(void) {" +
-                    "  gl_Position = aVertexPosition;" +
-                    "}";
+    private static ShaderProgram defaultShaderProgram;
 
-    private static final String defaultFragmentShaderCode =
-            "precision mediump float;" +
-                    "void main(void) {" +
-                    "  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);" +
-                    "}";
+    private Context context;
+    private ArrayList<Shape> objects = new ArrayList<>();
 
-    private static int defaultProgram;
 
-    private ArrayList<Mesh> objects = new ArrayList<>();
-
+    public GameRenderer(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
@@ -42,7 +37,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         //GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         //GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 
-        defaultProgram = initDefaultShaderProgram();
+        initDefaultShaderProgram();
         Log.d(tag, "Created & default shader program has been initialized");
 
         //objects.add(MeshFactory.getExampleTriangle());
@@ -58,12 +53,12 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT /*| GLES20.GL_DEPTH_BUFFER_BIT*/);
 
-        for (Mesh m : objects)
+        for (Shape m : objects)
             m.draw();
     }
 
     public static int getDefaultShaderProgram() {
-        return defaultProgram;
+        return defaultShaderProgram.getCurrentProgram();
     }
 
     public static int loadShader(int type, String source) {
@@ -109,9 +104,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         return program;
     }
 
-    private int initDefaultShaderProgram() {
-        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, defaultFragmentShaderCode);
-        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, defaultVertexShaderCode);
-        return loadProgram(vertexShader, fragmentShader);
+    private void initDefaultShaderProgram() {
+        defaultShaderProgram = new ShaderProgram(context, "default_vertex.vert", "default_fragment.frag");
     }
 }

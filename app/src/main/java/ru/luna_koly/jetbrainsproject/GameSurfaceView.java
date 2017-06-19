@@ -29,7 +29,7 @@ public class GameSurfaceView extends GLSurfaceView {
             return;
         }
 
-        renderer = new GameRenderer();
+        renderer = new GameRenderer(context);
         setRenderer(renderer);
 
         // render only if there're some changes

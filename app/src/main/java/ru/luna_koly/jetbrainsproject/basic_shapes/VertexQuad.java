@@ -7,10 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRenderer;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Mesh;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
 
@@ -18,7 +17,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
  * Created with love by iMac on 18.06.17.
  */
 
-public class VertexQuad implements Mesh {
+public class VertexQuad implements Shape {
     private FloatBuffer vertexBuffer;
     private float[] vertices = new float[12];
 
