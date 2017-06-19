@@ -69,8 +69,18 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         GLES20.glShaderSource(shader, source);
         GLES20.glCompileShader(shader);
 
-        Log.e("triangle", "---");
-        Log.e("triangle", GLES20.glGetShaderInfoLog(shader));
+        int[] status = new int[1];
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, status, 0);
+
+        if (status[0] == 0) {
+            Log.e("triangle", "Couldn't load " + type);
+            Log.e("triangle", GLES20.glGetShaderInfoLog(shader));
+            GLES20.glDeleteShader(shader);
+            shader = 0;
+        }
+
+        if (shader == 0)
+            Log.e("triangle", "Loading shader trouble");
 
         return shader;
     }
@@ -81,8 +91,18 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         GLES20.glAttachShader(program, vertexShader);
         GLES20.glLinkProgram(program);
 
-        Log.e("triangle", "+++");
-        Log.e("triangle", GLES20.glGetProgramInfoLog(program));
+        int[] status = new int[1];
+        GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, status, 0);
+
+        if (status[0] == 0) {
+            Log.e("triangle", "Couldn't load shader program");
+            Log.e("triangle", GLES20.glGetProgramInfoLog(program));
+            GLES20.glDeleteProgram(program);
+            program = 0;
+        }
+
+        if (program == 0)
+            Log.e("triangle", "Loading program trouble");
 
         return program;
     }

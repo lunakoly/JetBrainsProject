@@ -25,6 +25,8 @@ public class Triangle implements Mesh {
     public Triangle(vec3 p1, vec3 p2, vec3 p3) {
         vertices = VertexFormatter.getVertices(p1, p2, p3);
 
+        Log.d("triangle", "" + Arrays.toString(vertices));
+
         ByteBuffer bb = ByteBuffer.allocateDirect(vertices.length * 4);
         bb.order(ByteOrder.nativeOrder());
 
@@ -50,8 +52,6 @@ public class Triangle implements Mesh {
     public void draw() {
         int program = getShaderProgram();
         GLES20.glUseProgram(program);
-
-        Log.d("triangle", "p = " + program);
 
         int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
         GLES20.glEnableVertexAttribArray(vertexPositionAttribute);

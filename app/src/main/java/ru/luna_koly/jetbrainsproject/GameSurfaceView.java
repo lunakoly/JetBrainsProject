@@ -24,7 +24,10 @@ public class GameSurfaceView extends GLSurfaceView {
                 activityManager.getDeviceConfigurationInfo();
         final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
 
-        Log.d("triangle", "" + supportsEs2);
+        if (!supportsEs2) {
+            Log.e("triangle", "ES2 is not supported");
+            return;
+        }
 
         renderer = new GameRenderer();
         setRenderer(renderer);
