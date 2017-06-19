@@ -23,9 +23,9 @@ import ru.luna_koly.jetbrainsproject.fragments.InventoryFragment;
 import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
-    final private String tag = "main_activity";
-    final private long wallpaperTime = 10000;
-    final private long moveAnimTime = 500;
+    private static final String TAG = "main_activity";
+    private static final long WALLPAPER_TIME = 10000;
+    private static final long MOVE_ANIM_TIME = 500;
 
     private LinearLayout fragmentHolder;
     private boolean isFragmentHolderOpen = false;
@@ -49,7 +49,7 @@ public class MainActivity extends NoTitleBarActivity {
         setupButtonListeners();
         setupBGSwitcher();
 
-        Log.d(tag, "Created");
+        Log.d(TAG, "Created");
     }
 
     private void setupFragmentHolder() {
@@ -64,6 +64,7 @@ public class MainActivity extends NoTitleBarActivity {
         inventoryFragment = (InventoryFragment) fm.findFragmentById(R.id.inventory_fragment);
 
         showHideFragments(settingsFragment, diaryFragment, inventoryFragment);
+        Log.d(TAG, "Fragment : OK");
     }
 
     private void setupBGSwitcher() {
@@ -100,9 +101,11 @@ public class MainActivity extends NoTitleBarActivity {
             public void run() {
                 int randomNum = random.nextInt(backgrounds.length);
                 bg.setImageResource(backgrounds[randomNum]);
-                handler.postDelayed(this, wallpaperTime);
+                handler.postDelayed(this, WALLPAPER_TIME);
             }
-        }, wallpaperTime);
+        }, WALLPAPER_TIME);
+
+        Log.d(TAG, "BGSwitcher : OK");
     }
 
     private void setupButtonListeners() {
@@ -151,6 +154,8 @@ public class MainActivity extends NoTitleBarActivity {
                 startActivity(i);
             }
         });
+
+        Log.d(TAG, "Buttons : OK");
     }
 
     private void disableButtonsFor(long delay) {
@@ -171,7 +176,7 @@ public class MainActivity extends NoTitleBarActivity {
     }
 
     private void triggerFragmentHolder() {
-        disableButtonsFor(moveAnimTime);
+        disableButtonsFor(MOVE_ANIM_TIME);
 
         if (isFragmentHolderOpen) {
             isFragmentHolderOpen = false;

@@ -6,7 +6,6 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -21,7 +20,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
  */
 
 public class GameRenderer implements GLSurfaceView.Renderer {
-    final static private String tag = "renderer";
+    private static final String TAG = "renderer";
 
     private static ShaderProgram defaultShaderProgram;
 
@@ -38,12 +37,13 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         initDefaultShaderProgram();
-        Log.d(tag, "Created & default shader program has been initialized");
+        Log.d(TAG, "Created & default shader program has been initialized");
 
         objects.add(MeshFactory.getExampleTriangle());
         objects.add(MeshFactory.getExampleRectangle());
 
-        camera.moveX(0.5f);
+        camera.moveX(0.4f);
+        camera.setZoom(-0.9f);
     }
 
     @Override
@@ -58,10 +58,14 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         for (Shape m : objects)
             m.recalculateVertices(camera);
 
-        Log.d(tag, "DRAWING");
+        for (Shape m : objects)
+            m.rescale(camera.getPosition(), camera.getZoom());
 
         for (Shape m : objects)
             m.draw();
+
+        for (Shape m : objects)
+            m.resetRelativeVertices();
     }
 
     public static int getDefaultShaderProgram() {

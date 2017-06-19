@@ -1,12 +1,11 @@
 package ru.luna_koly.jetbrainsproject;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 public class GameActivity extends Activity {
-    final private String tag = "game_activity";
+    private static final String TAG = "game_activity";
     private GameSurfaceView gameView;
 
     @Override
@@ -17,7 +16,7 @@ public class GameActivity extends Activity {
         gameView = new GameSurfaceView(this);
         setContentView(gameView);
 
-        Log.d(tag, "Created");
+        Log.d(TAG, "Created");
     }
 
     @Override

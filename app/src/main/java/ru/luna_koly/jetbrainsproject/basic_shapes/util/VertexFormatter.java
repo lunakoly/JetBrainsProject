@@ -43,7 +43,7 @@ public class VertexFormatter {
         return vertices;
     }
 
-    public static float[] projectToCamera2D(Camera cam, float... vertices) {
+    public static float[] projectToCamera(Camera cam, float... vertices) {
         float[] relative = new float[vertices.length];
 
         for (int i = 0; i < vertices.length / 3; i++) {
@@ -67,5 +67,19 @@ public class VertexFormatter {
         }
 
         return all;
+    }
+
+    public static float[] zoom2D(vec3 position, float power, float... vertices) {
+        for (int i = 0; i < vertices.length / 3; i++) {
+            float dx = vertices[i * 3]     - position.x;
+            float dy = vertices[i * 3 + 1] - position.y;
+            float dz = vertices[i * 3 + 2] - position.z;
+
+            vertices[i * 3]     += dx * power;
+            vertices[i * 3 + 1] += dy * power;
+            vertices[i * 3 + 2] += dz * power;
+        }
+
+        return vertices;
     }
 }
