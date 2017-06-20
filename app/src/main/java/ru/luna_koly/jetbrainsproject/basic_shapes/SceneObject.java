@@ -9,6 +9,7 @@ import android.util.Log;
 
 import ru.luna_koly.jetbrainsproject.FileLoader;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
+import ru.luna_koly.jetbrainsproject.GameSurfaceView;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.DrawableObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
@@ -31,17 +32,19 @@ public class SceneObject implements Shape {
     private ShaderProgram shaderProgram;
     private int program;
     private int texture;
+    private Bitmap bitmap;
 
 
-    public SceneObject(Context context, float width, float height, ShaderProgram program, String texturePath) {
+    public SceneObject(Context context, ShaderProgram program, String texturePath) {
         this.context = context;
-        this.width = width;
-        this.height = height;
         this.shaderProgram = program;
         this.program = shaderProgram.getCurrentProgram();
 
         this.texture = loadTexture(context, texturePath);
         this.position = new vec3(0, 0, 0);
+
+        this.width = bitmap.getWidth();
+        this.height = bitmap.getHeight();
 
         float w = width / 2;
         float h = height / 2;
@@ -57,7 +60,7 @@ public class SceneObject implements Shape {
         rect.setShaderProgram(this.program);
     }
 
-    public static int loadTexture(Context context, String path)
+    public int loadTexture(Context context, String path)
     {
         int[] textureHandle = new int[1];
 
@@ -69,7 +72,7 @@ public class SceneObject implements Shape {
             options.inScaled = false;   // No pre-scaling
 
             // Read in the resource
-            Bitmap bitmap = FileLoader.readBitmap(context, SEARCH_PATH + path);
+            bitmap = FileLoader.readBitmap(context, SEARCH_PATH + path);
 
             // Bind to the texture in OpenGL
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
@@ -110,6 +113,14 @@ public class SceneObject implements Shape {
 
         int textureHandler = GLES20.glGetUniformLocation(program, "uTextureCoord");
         GLES20.glUniform1i(textureHandler, 0);
+
+        // pass dimensions
+        int uDimensions = GLES20.glGetUniformLocation(program, "uDimensions");
+        GLES20.glUniform2f(uDimensions, this.width, this.height);
+
+        // pass screen
+        int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
+        GLES20.glUniform2f(uScreen, GameSurfaceView.instamce.getWidth(), GameSurfaceView.instamce.getHeight());
 
         rect.setVertexAttributePointer(texturePositionAttribute);
         rect.externalDraw(vertexPositionAttribute);

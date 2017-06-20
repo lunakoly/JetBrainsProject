@@ -46,7 +46,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         //objects.add(MeshFactory.getExampleTriangle());
         //objects.add(MeshFactory.getExampleRectangle());
 
-        objects.add(new SceneObject(context, 2.0f, 2.0f, textureShaderProgram, "geography_room.png"));
+        objects.add(new SceneObject(context, textureShaderProgram, "geography_room.png"));
 
         //camera.moveX(0.4f);
         //camera.setZoom(-0.9f);

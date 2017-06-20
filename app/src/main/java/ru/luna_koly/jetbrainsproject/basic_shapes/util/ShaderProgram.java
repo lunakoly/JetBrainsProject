@@ -12,7 +12,7 @@ import ru.luna_koly.jetbrainsproject.FileLoader;
 
 public class ShaderProgram {
     private static final String TAG = "shader_object";
-    private static final String searchPath = "shader/";
+    private static final String SEARCH_PATH = "shader/";
 
     private String fragmentShaderSource = "";
     private String vertexShaderSource = "";
@@ -23,8 +23,8 @@ public class ShaderProgram {
 
 
     public ShaderProgram(Context context, String vertexPath, String fragmentPath) {
-        fragmentShaderSource = FileLoader.readFile(context, searchPath + fragmentPath);
-        vertexShaderSource   = FileLoader.readFile(context, searchPath + vertexPath);
+        fragmentShaderSource = FileLoader.readFile(context, SEARCH_PATH + fragmentPath);
+        vertexShaderSource   = FileLoader.readFile(context, SEARCH_PATH + vertexPath);
 
         if (fragmentShaderSource.isEmpty()) Log.e(TAG, "Error while reading fragment shader file");
         if (vertexShaderSource.isEmpty()) Log.e(TAG, "Error while reading fragment shader file");
