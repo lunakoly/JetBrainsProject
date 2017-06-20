@@ -2,13 +2,14 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
-import android.opengl.GLUtils;
 import android.util.Log;
 
+import java.util.Arrays;
+
+import ru.luna_koly.jetbrainsproject.Engine;
 import ru.luna_koly.jetbrainsproject.FileLoader;
-import ru.luna_koly.jetbrainsproject.GameSurfaceView;
+import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
@@ -19,7 +20,6 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
  */
 
 public class SceneObject implements Shape {
-    private static final String SEARCH_PATH = "textures/";
     private static final String TAG = "scene_object";
 
     private VertexRectangle rect;
@@ -27,7 +27,6 @@ public class SceneObject implements Shape {
 
     private Context context;
     private float width, height;
-    private ShaderProgram shaderProgram;
     private int program;
     private int texture;
     private Bitmap bitmap;
@@ -35,14 +34,14 @@ public class SceneObject implements Shape {
 
     public SceneObject(Context context, ShaderProgram program, String texturePath) {
         this.context = context;
-        this.shaderProgram = program;
-        this.program = shaderProgram.getCurrentProgram();
+        this.program = program.getCurrentProgram();
 
-        this.texture = loadTexture(context, texturePath);
+        this.bitmap = FileLoader.readBitmap(context, texturePath);
+        this.texture = FileLoader.bitmapToTexture(bitmap);
         this.position = new vec3(0, 0, 0);
 
-        this.width = bitmap.getWidth();
-        this.height = bitmap.getHeight();
+        this.height = 2;
+        this.width = 2 * bitmap.getWidth() / bitmap.getHeight();
 
         float w = width / 2;
         float h = height / 2;
@@ -54,48 +53,68 @@ public class SceneObject implements Shape {
                 +w, +h, 0.0f
         };
 
+        Log.d(TAG, "draw: " + Arrays.toString(vertices));
+
         rect = new VertexRectangle(vertices);
         rect.setShaderProgram(this.program);
     }
 
-    public int loadTexture(Context context, String path)
-    {
-        int[] textureHandle = new int[1];
+    public SceneObject(Context context, float width, float height, ShaderProgram program) {
+        this.context = context;
+        this.program = program.getCurrentProgram();
 
-        GLES20.glGenTextures(1, textureHandle, 0);
+        this.position = new vec3(0, 0, 0);
 
-        if (textureHandle[0] != 0)
-        {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;   // No pre-scaling
+        this.height = height;
+        this.width = width;
 
-            // Read in the resource
-            bitmap = FileLoader.readBitmap(context, SEARCH_PATH + path);
+        float w = width / 2;
+        float h = height / 2;
 
-            // Bind to the texture in OpenGL
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
+        float[] vertices = {
+                -w, +h, 0.0f,
+                -w, -h, 0.0f,
+                +w, -h, 0.0f,
+                +w, +h, 0.0f
+        };
 
-            // Set filtering
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+        Log.d(TAG, "draw: " + Arrays.toString(vertices));
 
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+        rect = new VertexRectangle(vertices);
+        rect.setShaderProgram(this.program);
+    }
 
-            // Load the bitmap into the bound texture.
-            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
+    public void setTexture(String texturePath) {
+        this.bitmap = FileLoader.readBitmap(context, texturePath);
+        this.texture = FileLoader.bitmapToTexture(bitmap);
+    }
 
-            // Recycle the bitmap, since its data has been loaded into OpenGL.
-            bitmap.recycle();
-        } else {
-            Log.e(TAG, "Error loading texture.");
-        }
+    public void setPosition(vec3 position) {
+        this.position = position;
+    }
 
-        return textureHandle[0];
+    public void moveX(float f) {
+        position = new vec3(f, position.y, position.z);
+    }
+
+    public void moveY(float f) {
+        position = new vec3(position.x, f, position.z);
+    }
+
+    public void moveZ(float f) {
+        position = new vec3(position.x, position.y, f);
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
     @Override
-    public void draw() {
+    public void draw(float[] mvpMatrix) {
         GLES20.glUseProgram(program);
 
         int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
@@ -103,6 +122,16 @@ public class SceneObject implements Shape {
 
         int texturePositionAttribute = GLES20.glGetAttribLocation(program, "aTextureCoord");
         GLES20.glEnableVertexAttribArray(texturePositionAttribute);
+
+        // pass dimensions
+        int uDimensions = GLES20.glGetUniformLocation(program, "uDimensions");
+        GLES20.glUniform2f(uDimensions, this.width, this.height);
+
+        // pass screen
+        int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
+        GameSurface gs = Engine.getInstance().getSurface();
+        GLES20.glUniform2f(uScreen, gs.getWidth(), gs.getHeight());
+
 
         // Set the active texture unit to texture unit 0.
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -112,32 +141,15 @@ public class SceneObject implements Shape {
         int textureHandler = GLES20.glGetUniformLocation(program, "uTextureCoord");
         GLES20.glUniform1i(textureHandler, 0);
 
-        // pass dimensions
-        int uDimensions = GLES20.glGetUniformLocation(program, "uDimensions");
-        GLES20.glUniform2f(uDimensions, this.width, this.height);
+        int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
+        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mvpMatrix, 0);
 
-        // pass screen
-        int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
-        GLES20.glUniform2f(uScreen, GameSurfaceView.instance.getWidth(), GameSurfaceView.instance.getHeight());
 
-        rect.setVertexAttributePointer(texturePositionAttribute);
+        rect.addVertexAttribPointer(texturePositionAttribute);
         rect.externalDraw(vertexPositionAttribute);
 
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(texturePositionAttribute);
     }
 
-    @Override
-    public void externalDraw(int vertexPositionAttribute) {}
-
-    @Override
-    public void recalculateVertices(Camera camera) {
-        rect.recalculateVertices(camera);
-    }
-
-    @Override
-    public void rescale(vec3 center, float power) {}
-
-    @Override
-    public void resetRelativeVertices() {}
 }

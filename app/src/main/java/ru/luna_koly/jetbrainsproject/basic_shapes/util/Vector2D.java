@@ -17,6 +17,12 @@ public class Vector2D {
         angle  = getAngleOf2Points(p1, p2);
     }
 
+    public Vector2D(float module, double angle, vec2 start) {
+        this.module = module;
+        this.angle = angle;
+        this.p = start;
+    }
+
     public float getModule() {
         return module;
     }

@@ -29,29 +29,13 @@ public class VertexRectangle extends AbstractVertexShape {
             this.vertices = vertices;
 
         this.vertices = VertexFormatter.getTriadOfPattern(vertices, drawOrder);
-        resetRelativeVertices();
         genBuffer();
 
         // set to default
-        shaderProgram = GameRenderer.getDefaultShaderProgram();
+        shaderProgram = GameRenderer.getDefaultShaderProgram().getCurrentProgram();
     }
 
     public VertexRectangle(vec3 p1, vec3 p2, vec3 p3, vec3 p4) {
         this(VertexFormatter.getVertices(p1, p2, p3, p4));
-    }
-
-    public void setVertexAttributePointer(int vertexPositionAttribute) {
-        GLES20.glVertexAttribPointer(vertexPositionAttribute, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-    }
-
-    @Override
-    public void draw() {
-        GLES20.glUseProgram(shaderProgram);
-
-        int vertexPositionAttribute = GLES20.glGetAttribLocation(shaderProgram, "aVertexPosition");
-        GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
-
-        externalDraw(vertexPositionAttribute);
-        GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
     }
 }

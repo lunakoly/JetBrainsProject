@@ -46,6 +46,8 @@ public class ShaderProgram {
 
 
     public static int loadShader(int type, String source) {
+        Log.d(TAG, "" + (type == GLES20.GL_FRAGMENT_SHADER));
+
         int shader = GLES20.glCreateShader(type);
         GLES20.glShaderSource(shader, source);
         GLES20.glCompileShader(shader);
@@ -61,7 +63,7 @@ public class ShaderProgram {
         }
 
         if (shader == 0)
-            Log.e(TAG, "Loading shader trouble");
+            Log.e(TAG, "Loading shader trouble : " + type);
 
         return shader;
     }
