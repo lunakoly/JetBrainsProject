@@ -7,6 +7,7 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 public class Camera {
     private float x, y, z;  // speed
     private float zoom = 0;
+    private Scene scene = null;
 
 
     public Camera(float x, float y, float z) {
@@ -61,23 +62,38 @@ public class Camera {
 
     public Camera moveX(float dx) {
         x += dx;
+
+        float f = scene.getWidth() / 2;
+        if (x > f) x = f;
+        else if (x < -f) x = -f;
+
         return this;
     }
 
     public Camera moveY(float dy) {
         y += dy;
+
+        float f = scene.getHeight() / 2;
+        if (y > f) y = f;
+        else if (y < -f) y = -f;
+
         return this;
     }
 
     public Camera moveZ(float dz) {
         z += dz;
+
+        float f = scene.getDepth() / 2;
+        if (z > f) z = f;
+        else if (z < -f) z = -f;
+
         return this;
     }
 
     public Camera move(float dx, float dy, float dz) {
-        x += dx;
-        y += dy;
-        z += dz;
+        moveX(dx);
+        moveY(dy);
+        moveZ(dz);
         return this;
     }
 
@@ -87,5 +103,9 @@ public class Camera {
 
     public void setZoom(float zoom) {
         this.zoom = zoom;
+    }
+
+    public void restrictToScene(Scene scene) {
+        this.scene = scene;
     }
 }

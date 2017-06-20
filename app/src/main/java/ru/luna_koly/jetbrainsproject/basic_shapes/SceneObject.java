@@ -8,10 +8,8 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 import ru.luna_koly.jetbrainsproject.FileLoader;
-import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.GameSurfaceView;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.DrawableObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
@@ -120,15 +118,13 @@ public class SceneObject implements Shape {
 
         // pass screen
         int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
-        GLES20.glUniform2f(uScreen, GameSurfaceView.instamce.getWidth(), GameSurfaceView.instamce.getHeight());
+        GLES20.glUniform2f(uScreen, GameSurfaceView.instance.getWidth(), GameSurfaceView.instance.getHeight());
 
         rect.setVertexAttributePointer(texturePositionAttribute);
         rect.externalDraw(vertexPositionAttribute);
 
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(texturePositionAttribute);
-
-        Log.d(TAG, "DRAWING");
     }
 
     @Override

@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
-import android.view.View;
 
 /**
  * Created with love by iMac on 18.06.17.
@@ -19,12 +17,12 @@ public class GameSurfaceView extends GLSurfaceView {
     private float lastX = -1;
     private float lastY = -1;
 
-    public static GameSurfaceView instamce;
+    public static GameSurfaceView instance;
 
 
     public GameSurfaceView(Context context) {
         super(context);
-        instamce = this;
+        instance = this;
 
         final ActivityManager activityManager =
                 (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -44,7 +42,7 @@ public class GameSurfaceView extends GLSurfaceView {
         setRenderer(renderer);
 
         // render only if there're some changes
-        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         Log.d(TAG, "Game surface view : OK");
     }
 
@@ -61,7 +59,8 @@ public class GameSurfaceView extends GLSurfaceView {
 
         } else {
             GameRenderer.camera.moveX((event.getX() - lastX) / 5000);
-            //GameRenderer.camera.moveY((lastY - event.getY()) / 1000);
+            GameRenderer.camera.moveY((lastY - event.getY()) / 1000);
+            requestRender();
         }
 
         return true;

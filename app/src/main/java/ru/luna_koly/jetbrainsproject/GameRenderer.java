@@ -12,6 +12,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
@@ -50,6 +51,8 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
         //camera.moveX(0.4f);
         //camera.setZoom(-0.9f);
+
+        camera.restrictToScene(new Scene(1, 0, 0));
     }
 
     @Override
