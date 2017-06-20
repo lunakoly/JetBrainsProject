@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
@@ -23,6 +24,8 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "renderer";
 
     private static ShaderProgram defaultShaderProgram;
+    private static ShaderProgram textureShaderProgram;
+
 
     private Context context;
     Camera camera = new Camera(0, 0, 0);
@@ -37,10 +40,13 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         initDefaultShaderProgram();
-        Log.d(TAG, "Created & default shader program has been initialized");
+        initTextureShaderProgram();
+        Log.d(TAG, "Created & shader programs have been initialized");
 
-        objects.add(MeshFactory.getExampleTriangle());
-        objects.add(MeshFactory.getExampleRectangle());
+        //objects.add(MeshFactory.getExampleTriangle());
+        //objects.add(MeshFactory.getExampleRectangle());
+
+        objects.add(new SceneObject(context, 2.0f, 2.0f, textureShaderProgram, "geography_room.png"));
 
         //camera.moveX(0.4f);
         //camera.setZoom(-0.9f);
@@ -74,5 +80,13 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     private void initDefaultShaderProgram() {
         defaultShaderProgram = new ShaderProgram(context, "default_vertex.vert", "default_fragment.frag");
+    }
+
+    public static int getTextureShaderProgram() {
+        return textureShaderProgram.getCurrentProgram();
+    }
+
+    private void initTextureShaderProgram() {
+        textureShaderProgram = new ShaderProgram(context, "texture_vertex.vert", "texture_fragment.frag");
     }
 }

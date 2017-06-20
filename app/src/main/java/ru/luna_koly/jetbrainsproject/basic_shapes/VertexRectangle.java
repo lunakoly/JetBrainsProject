@@ -40,6 +40,10 @@ public class VertexRectangle extends AbstractVertexShape {
         this(VertexFormatter.getVertices(p1, p2, p3, p4));
     }
 
+    public void setVertexAttributePointer(int vertexPositionAttribute) {
+        GLES20.glVertexAttribPointer(vertexPositionAttribute, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+    }
+
     @Override
     public void draw() {
         GLES20.glUseProgram(shaderProgram);

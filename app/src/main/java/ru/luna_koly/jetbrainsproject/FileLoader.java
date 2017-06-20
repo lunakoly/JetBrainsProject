@@ -1,10 +1,16 @@
 package ru.luna_koly.jetbrainsproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileLockInterruptionException;
 import java.util.Scanner;
 
 /**
@@ -38,6 +44,15 @@ public class FileLoader {
 
     public static String readFile(Context context, String path) {
         return readStream(streamFile(context, path));
+    }
+
+    public static Bitmap readBitmap(Context context, String path) {
+        try {
+            return BitmapFactory.decodeStream(context.getAssets().open(path));
+        } catch (IOException e) {
+            Log.e(TAG, "Unable to load file " + path);
+            return null;
+        }
     }
 
 }
