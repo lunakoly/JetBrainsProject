@@ -1,0 +1,2 @@
+<rep who="OBJ-ik" text="Hello. Where have you been?" next="1 2" />
+<rep who="Charly" text="Am I late?" next="3 4" id="1" />
