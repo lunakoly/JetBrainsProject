@@ -135,7 +135,9 @@ public class SceneObject implements Shape {
     public void externalDraw(int vertexPositionAttribute) {}
 
     @Override
-    public void recalculateVertices(Camera camera) {}
+    public void recalculateVertices(Camera camera) {
+        rect.recalculateVertices(camera);
+    }
 
     @Override
     public void rescale(vec3 center, float power) {}

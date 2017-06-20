@@ -6,6 +6,7 @@ import android.content.pm.ConfigurationInfo;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -15,6 +16,8 @@ import android.view.View;
 public class GameSurfaceView extends GLSurfaceView {
     private static final String TAG = "game_view";
     private GameRenderer renderer;
+    private float lastX = -1;
+    private float lastY = -1;
 
     public static GameSurfaceView instamce;
 
@@ -41,18 +44,28 @@ public class GameSurfaceView extends GLSurfaceView {
         setRenderer(renderer);
 
         // render only if there're some changes
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
         Log.d(TAG, "Game surface view : OK");
-
-        setOnDragListener(new OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                Log.d(TAG, "onDrag: " + event.getX() + " : " + event.getY());
-                return false;
-            }
-        });
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if (lastX == -1) {
+            lastX = event.getX();
+            lastY = event.getY();
+
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            lastX = -1;
+            lastY = -1;
+
+        } else {
+            GameRenderer.camera.moveX((event.getX() - lastX) / 5000);
+            //GameRenderer.camera.moveY((lastY - event.getY()) / 1000);
+        }
+
+        return true;
+    }
 
 
 }

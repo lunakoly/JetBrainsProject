@@ -28,7 +28,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
 
     private Context context;
-    Camera camera = new Camera(0, 0, 0);
+    public static Camera camera = new Camera(0, 0, 0);
     private ArrayList<Shape> objects = new ArrayList<>();
 
 
@@ -72,6 +72,8 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
         for (Shape m : objects)
             m.resetRelativeVertices();
+
+        Log.d(TAG, "onDrawFrame: " + camera.getPosition().x);
     }
 
     public static int getDefaultShaderProgram() {
