@@ -7,7 +7,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.VertexTriangle;
  * Created with love by iMac on 18.06.17.
  */
 
-public class MeshFactory {
+public class SceneFactory {
 
     public static VertexTriangle getExampleTriangle() {
         float[] vertices = {                // counterclockwise

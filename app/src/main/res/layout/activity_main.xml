@@ -86,16 +86,9 @@
             android:layout_height="match_parent" />
 
         <fragment
-            android:id="@+id/diary_fragment"
-            android:name="ru.luna_koly.jetbrainsproject.fragments.DiaryFragment"
-            tools:layout="@layout/main_menu_diary_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <fragment
-            android:id="@+id/inventory_fragment"
-            android:name="ru.luna_koly.jetbrainsproject.fragments.InventoryFragment"
-            tools:layout="@layout/main_menu_inventory_fragment"
+            android:id="@+id/play_fragment"
+            android:name="ru.luna_koly.jetbrainsproject.fragments.PlayFragment"
+            tools:layout="@layout/main_menu_settings_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

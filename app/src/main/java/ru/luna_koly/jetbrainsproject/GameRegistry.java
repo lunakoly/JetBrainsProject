@@ -1,7 +1,5 @@
 package ru.luna_koly.jetbrainsproject;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
@@ -15,6 +13,7 @@ public class GameRegistry {
 
     private Engine engine;
     private ArrayList<Scene2> scenes = new ArrayList<>();
+    private ArrayList<Runnable> startupAlgorithms = new ArrayList<>();
     private Scene2 lastScene = null;
 
 
@@ -48,4 +47,22 @@ public class GameRegistry {
         return lastInstance;
     }
 
+    private void addAction(Runnable action) {
+        startupAlgorithms.add(action);
+    }
+
+    public static GameRegistry addStartupAlgorithm(Runnable algorithm) {
+        lastInstance.addAction(algorithm);
+        return lastInstance;
+    }
+
+    private void activateStartActions() {
+        for (Runnable r : startupAlgorithms)
+            r.run();
+    }
+
+    public static GameRegistry runStartupAlgorithms() {
+        lastInstance.activateStartActions();
+        return lastInstance;
+    }
 }

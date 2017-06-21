@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,13 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import java.util.Random;
 
 import ru.luna_koly.jetbrainsproject.activityTemplates.NoTitleBarActivity;
-import ru.luna_koly.jetbrainsproject.fragments.DiaryFragment;
-import ru.luna_koly.jetbrainsproject.fragments.InventoryFragment;
+import ru.luna_koly.jetbrainsproject.fragments.PlayFragment;
 import ru.luna_koly.jetbrainsproject.fragments.SettingsFragment;
 
 public class MainActivity extends NoTitleBarActivity {
@@ -37,14 +36,15 @@ public class MainActivity extends NoTitleBarActivity {
     private ImageButton play, inventory, diary, settings;
     private FragmentManager fm;
     private SettingsFragment settingsFragment;
-    private DiaryFragment diaryFragment;
-    private InventoryFragment inventoryFragment;
+    private PlayFragment playFragment;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LoadingInitializer loadManager = new LoadingInitializer(this);
 
         setupFragmentHolder();
         setupButtonListeners();
@@ -61,10 +61,9 @@ public class MainActivity extends NoTitleBarActivity {
 
         fm = getFragmentManager();
         settingsFragment = (SettingsFragment) fm.findFragmentById(R.id.settings_fragment);
-        diaryFragment = (DiaryFragment) fm.findFragmentById(R.id.diary_fragment);
-        inventoryFragment = (InventoryFragment) fm.findFragmentById(R.id.inventory_fragment);
+        playFragment = (PlayFragment) fm.findFragmentById(R.id.play_fragment);
 
-        showHideFragments(settingsFragment, diaryFragment, inventoryFragment);
+        showHideFragments(settingsFragment, playFragment);
         Log.d(TAG, "Fragment : OK");
     }
 
@@ -129,40 +128,80 @@ public class MainActivity extends NoTitleBarActivity {
         diary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.DIARY) {
-                    triggerFragmentHolder();
-                }
 
-                setFragmentHolderState(FragmentHolderState.DIARY);
             }
         });
 
         inventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.INVENTORY) {
-                    triggerFragmentHolder();
-                }
 
-                setFragmentHolderState(FragmentHolderState.INVENTORY);
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, GameActivity.class);
-                startActivity(i);
+                if (!isFragmentHolderOpen || currentFragmentHolderState == FragmentHolderState.PLAY) {
+                    triggerFragmentHolder();
+                }
+
+                setFragmentHolderState(FragmentHolderState.PLAY);
             }
         });
+
+        setPlayButtons();
 
         Log.d(TAG, "Buttons : OK");
     }
 
+    private void setPlayButtons() {
+        View save1 = playFragment.getView().findViewById(R.id.save1);
+        View save2 = playFragment.getView().findViewById(R.id.save2);
+
+        ImageButton play1 = (ImageButton) save1.findViewById(R.id.play_button);
+        ImageButton play2 = (ImageButton) save2.findViewById(R.id.play_button);
+
+        play1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadingInitializer.playProfile(MainActivity.this, 0);
+                closeFragmentHolder();
+            }
+        });
+
+        play2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadingInitializer.playProfile(MainActivity.this, 1);
+                closeFragmentHolder();
+            }
+        });
+
+        ImageButton delete1 = (ImageButton) save1.findViewById(R.id.delete_button);
+        ImageButton delete2 = (ImageButton) save2.findViewById(R.id.delete_button);
+
+        delete1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadingInitializer.deleteProfile(MainActivity.this, 0);
+            }
+        });
+
+        delete2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadingInitializer.deleteProfile(MainActivity.this, 1);
+            }
+        });
+
+        LoadingInitializer.update(save1);
+        LoadingInitializer.update(save2);
+    }
+
     private void disableButtonsFor(long delay) {
         disableImageButtonFor(inventory, delay);
-        disableImageButtonFor(diary, delay);
-        disableImageButtonFor(settings, delay);
+        disableImageButtonFor(play, delay);
     }
 
     private void disableImageButtonFor(final ImageButton button, long delay) {
@@ -219,20 +258,17 @@ public class MainActivity extends NoTitleBarActivity {
 
         switch (fragmentHolderState) {
             case SETTINGS:
-                showHideFragments(settingsFragment, diaryFragment, inventoryFragment);
+                showHideFragments(settingsFragment, playFragment);
                 break;
-            case DIARY:
-                showHideFragments(diaryFragment, settingsFragment, inventoryFragment);
-                break;
-            case INVENTORY:
-                showHideFragments(inventoryFragment, diaryFragment, settingsFragment);
+            case PLAY:
+                showHideFragments(playFragment, settingsFragment);
                 break;
         }
     }
 
 
     private enum FragmentHolderState {
-        SETTINGS, DIARY, INVENTORY
+        SETTINGS, PLAY
     }
 
 }

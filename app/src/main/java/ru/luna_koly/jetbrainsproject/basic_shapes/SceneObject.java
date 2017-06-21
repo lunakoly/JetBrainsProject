@@ -41,7 +41,7 @@ public class SceneObject implements Shape {
         this.position = new vec3(0, 0, 0);
 
         this.height = 2;
-        this.width = 2 * bitmap.getWidth() / bitmap.getHeight();
+        this.width = 2 * bitmap.getWidth() / (float) bitmap.getHeight();
 
         float w = width / 2;
         float h = height / 2;

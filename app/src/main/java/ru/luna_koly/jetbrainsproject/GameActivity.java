@@ -5,9 +5,6 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 
-import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
-
 public class GameActivity extends Activity {
     private static final String TAG = "game_activity";
 
@@ -25,6 +22,8 @@ public class GameActivity extends Activity {
         setContentView(gameView);
 
         Log.d(TAG, "Created");
+
+        GameRegistry.addStartupAlgorithm(LoadingInitializer.getInstance());
     }
 
     @Override

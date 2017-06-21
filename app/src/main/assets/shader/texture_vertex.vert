@@ -15,7 +15,8 @@ float scale(float f) {
 
 void main() {
     vec2 tc = aTextureCoord;
-    tc.x = tc.x * uDimensions.y / uDimensions.x;
+    tc.y = tc.y * 2.0 / uDimensions.y;
+    tc.x = tc.x * 2.0 / uDimensions.x;
 
     tc.x = 1.0 - scale(tc.x);
     tc.y = 1.0 - scale(tc.y);

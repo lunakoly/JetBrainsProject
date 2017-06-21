@@ -4,21 +4,13 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.SystemClock;
 import android.util.Log;
-
-import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
-import ru.luna_koly.jetbrainsproject.basic_shapes.VertexTriangle;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.MeshFactory;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 
 /**
@@ -52,16 +44,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         initTextureShaderProgram();
         Log.d(TAG, "Created & shader programs have been initialized");
 
-        Scene2 scene = new Scene2(10, 0, 0);
-        SceneObject so = new SceneObject(context,
-                getTextureShaderProgram(), "geography_room.png");
-        scene.add(so);
-        scene.cropToObject(so);
-
-        so = new SceneObject(context, 0.5f, 0.5f, getDefaultShaderProgram());
-        scene.add(so);
-        
-        GameRegistry.runScene(scene);
+        GameRegistry.runStartupAlgorithms();
     }
 
     @Override

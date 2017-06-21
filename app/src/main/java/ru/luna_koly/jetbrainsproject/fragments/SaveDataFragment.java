@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import ru.luna_koly.jetbrainsproject.R;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created by user on 6/21/17.
  */
 
-public class DiaryFragment extends Fragment {
+public class SaveDataFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_menu_diary_fragment, container, false);
+        return inflater.inflate(R.layout.save_data_profile, container, false);
     }
 
 }

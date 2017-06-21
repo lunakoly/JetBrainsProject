@@ -36,8 +36,6 @@ public class GameSurface extends GLSurfaceView {
 
         } else {
             Camera c = Engine.getInstance().getRenderer().getTargetScene().getCamera();
-
-            Log.d(TAG, "" + c.getPosition().x);
             c.moveX((event.getX() - lastX) / 1000);
             c.moveY((event.getY() - lastY) / 1000);
             requestRender();
