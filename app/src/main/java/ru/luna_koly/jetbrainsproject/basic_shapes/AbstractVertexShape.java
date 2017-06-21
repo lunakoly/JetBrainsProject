@@ -8,6 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
+import ru.luna_koly.jetbrainsproject.util.Uniforms;
 
 /**
  * Created with love by luna_koly on 19.06.17.
@@ -45,14 +46,14 @@ abstract class AbstractVertexShape implements Shape {
     }
 
     @Override
-    public void draw(float[] mvpMatrix) {
+    public void draw(Uniforms u) {
         GLES20.glUseProgram(shaderProgram);
 
         int vertexPositionAttribute = GLES20.glGetAttribLocation(shaderProgram, "aVertexPosition");
         GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
 
         int uMVPMatrix = GLES20.glGetUniformLocation(shaderProgram, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mvpMatrix, 0);
+        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, u.mvpMatrix, 0);
 
         externalDraw(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);

@@ -4,12 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
-import ru.luna_koly.jetbrainsproject.GameRenderer;
-import ru.luna_koly.jetbrainsproject.basic_shapes.Actionable;
 import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
-import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
-import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 
 /**

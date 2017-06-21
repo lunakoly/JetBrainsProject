@@ -6,7 +6,6 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -15,6 +14,8 @@ import javax.microedition.khronos.opengles.GL10;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
+import ru.luna_koly.jetbrainsproject.util.Uniforms;
+import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 
 /**
  * Created with love by luna_koly on 18.06.17.
@@ -27,6 +28,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     private Context context;
     private Scene targetScene;
+    private Engine engine;
 
 
     // mMVPDynamicMatrix is an abbreviation for "Model View Projection Matrix"
@@ -39,6 +41,10 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     GameRenderer(Context context) {
         this.context = context;
+    }
+
+    void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
     @Override
@@ -64,6 +70,10 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         Camera c = targetScene.getCamera();
+        Uniforms u = new Uniforms();
+
+        u.globalTime = System.currentTimeMillis() % 1000;
+        u.screen = new vec2(engine.getSurface().getWidth(), engine.getSurface().getHeight());
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mDynamicViewMatrix, 0, c.getX(), c.getY(), -3,
@@ -77,8 +87,11 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPDynamicMatrix, 0, mProjectionMatrix, 0, mDynamicViewMatrix, 0);
         Matrix.multiplyMM(mMVPStaticMatrix, 0, mProjectionMatrix, 0, mStaticViewMatrix, 0);
 
-        targetScene.drawObjects(mMVPDynamicMatrix);
-        targetScene.drawUI(mMVPStaticMatrix);
+        u.mvpMatrix = mMVPDynamicMatrix;
+
+        targetScene.drawObjects(u);
+        u.mvpMatrix = mMVPStaticMatrix;
+        targetScene.drawUI(u);
     }
 
     private void initShaderPrograms() {

@@ -9,7 +9,7 @@ import android.util.Log;
  * Created with love by luna_koly on 20.06.17.
  */
 
-public class Engine {
+class Engine {
     private static final String TAG = "engine";
 
     private Context context;
@@ -39,6 +39,7 @@ public class Engine {
         Log.d(TAG, "GLES20 : OK");
 
         renderer = new GameRenderer(context);
+        renderer.setEngine(this);
         surface.setRenderer(renderer);
 
         new GameRegistry(this);

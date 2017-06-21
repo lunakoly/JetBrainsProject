@@ -11,6 +11,7 @@ import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
+import ru.luna_koly.jetbrainsproject.util.Uniforms;
 
 /**
  * Created with love by luna_koly on 20.06.17.
@@ -70,14 +71,14 @@ public class Scene {
         return this;
     }
 
-    public void drawObjects(float[] mvpMatrix) {
+    public void drawObjects(Uniforms uniforms) {
         for (Shape m : objects)
-            m.draw(mvpMatrix);
+            m.draw(uniforms);
     }
 
-    public void drawUI(float[] mvpMatrix) {
+    public void drawUI(Uniforms uniforms) {
         for (Shape m : UIs)
-            m.draw(mvpMatrix);
+            m.draw(uniforms);
     }
 
     public void cropToObject(SceneObject so) {

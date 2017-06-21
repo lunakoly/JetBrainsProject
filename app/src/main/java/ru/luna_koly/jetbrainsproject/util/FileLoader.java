@@ -147,7 +147,7 @@ public class FileLoader {
         return program;
     }
 
-    public static Scene loadScene(Context context, String path) {
+    static Scene loadScene(Context context, String path) {
         try {
             XmlPullParser xpp = Xml.newPullParser();
             xpp.setInput(streamFile(context, SCENES_PATH + path + ".xml"), null);

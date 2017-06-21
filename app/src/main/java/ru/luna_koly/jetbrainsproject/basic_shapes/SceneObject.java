@@ -3,16 +3,14 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.util.Log;
 import android.view.MotionEvent;
-
-import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.util.FileLoader;
 import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
+import ru.luna_koly.jetbrainsproject.util.Uniforms;
 import ru.luna_koly.jetbrainsproject.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
@@ -105,7 +103,7 @@ public class SceneObject implements Shape {
     }
 
     @Override
-    public void draw(float[] mvpMatrix) {
+    public void draw(Uniforms u) {
         GLES20.glUseProgram(program);
 
         int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
@@ -120,8 +118,7 @@ public class SceneObject implements Shape {
 
         // pass screen
         int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
-        GameSurface gs = GameRegistry.getSurface();
-        GLES20.glUniform2f(uScreen, gs.getWidth(), gs.getHeight());
+        GLES20.glUniform2f(uScreen, u.screen.x, u.screen.y);
 
         // pass dimensions
         int uPosition = GLES20.glGetUniformLocation(program, "uPosition");
@@ -136,11 +133,11 @@ public class SceneObject implements Shape {
         GLES20.glUniform1i(textureHandler, 0);
 
         int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mvpMatrix, 0);
+        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, u.mvpMatrix, 0);
 
         // global time
         int uGlobalTime = GLES20.glGetUniformLocation(program, "uGlobalTime");
-        GLES20.glUniform1f(uGlobalTime, System.currentTimeMillis() % 1000);
+        GLES20.glUniform1f(uGlobalTime, u.globalTime);
 
 
         // update pos
