@@ -43,13 +43,13 @@ public class VertexFormatter {
         return vertices;
     }
 
-    public static float[] projectToCamera(Camera cam, float... vertices) {
+    public static float[] translateToPosition(vec3 pos, float... vertices) {
         float[] relative = new float[vertices.length];
 
         for (int i = 0; i < vertices.length / 3; i++) {
-            relative[i * 3]     = vertices[i * 3]     + cam.getX();
-            relative[i * 3 + 1] = vertices[i * 3 + 1] + cam.getY();
-            relative[i * 3 + 2] = vertices[i * 3 + 2] + cam.getZ();
+            relative[i * 3]     = vertices[i * 3]     + pos.x;
+            relative[i * 3 + 1] = vertices[i * 3 + 1] + pos.y;
+            relative[i * 3 + 2] = vertices[i * 3 + 2] + pos.z;
         }
 
         return relative;

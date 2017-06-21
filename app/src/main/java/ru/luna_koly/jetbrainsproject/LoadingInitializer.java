@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
+import ru.luna_koly.jetbrainsproject.basic_shapes.objects.Human;
+import ru.luna_koly.jetbrainsproject.basic_shapes.objects.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
 
 /**
@@ -41,15 +43,18 @@ public class LoadingInitializer implements Runnable {
     public void run() {
         Scene2 scene = new Scene2(10, 0, 0);
         SceneObject so = new SceneObject(context,
-                GameRenderer.getTextureShaderProgram(), "geography_room.png");
+                GameRenderer.getTextureShaderProgram(), "entering_hall.png");
         scene.add(so);
         scene.cropToObject(so);
 
-        so = new SceneObject(context, 1f, 1f, GameRenderer.getTextureShaderProgram());
-        so.setTexture("char/charly_standing.png");
+        so = new Human(context, "Mr. Mitozhirski", "char/mitozhirski_standing.png");
+        so.moveX(-1f);
         scene.add(so);
 
-        Log.d(TAG, "run: " + so.getWidth());
+        so = new Player(context);
+        scene.add(so);
+
+        so.moveY(+0.5f);
 
         GameRegistry.runScene(scene);
     }

@@ -79,6 +79,9 @@ public class FileLoader {
             // Load the bitmap into the bound texture.
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
 
+            GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+            GLES20.glEnable(GLES20.GL_BLEND);
+
             // Recycle the bitmap, since its data has been loaded into OpenGL.
             bitmap.recycle();
         } else {

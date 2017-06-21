@@ -3,6 +3,7 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 import android.content.Context;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class Scene2 {
 
     public Scene2 add(Shape object) {
         objects.add(object);
+        object.setScene(this);
         return this;
     }
 
@@ -69,5 +71,11 @@ public class Scene2 {
         if (height < 0) height = -height;
 
         Log.d("HUI", "" + width + " : " + height);
+    }
+
+    public void notifyEvent(MotionEvent event) {
+        for (Shape s : objects) {
+            s.notifyEvent(event);
+        }
     }
 }

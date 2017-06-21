@@ -5,6 +5,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.util.Date;
+
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 
 /**
@@ -13,9 +15,11 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 
 public class GameSurface extends GLSurfaceView {
     private static final String TAG = "game_view";
+    private static final long CLICK_DURATION = 200;
 
     private float lastX = -1;
     private float lastY = -1;
+    private long pressDuration;
 
 
     public GameSurface(Context context) {
@@ -34,6 +38,10 @@ public class GameSurface extends GLSurfaceView {
             lastX = -1;
             lastY = -1;
 
+            if (pressDuration < CLICK_DURATION) click(event);
+
+        } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            pressDuration = new Date().getTime();
         } else {
             Camera c = Engine.getInstance().getRenderer().getTargetScene().getCamera();
             c.moveX((event.getX() - lastX) / 1000);
@@ -44,4 +52,7 @@ public class GameSurface extends GLSurfaceView {
         return true;
     }
 
+    private void click(MotionEvent event) {
+        Engine.getInstance().getRenderer().getTargetScene().notifyEvent(event);
+    }
 }

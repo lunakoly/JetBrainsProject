@@ -2,6 +2,7 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 import android.opengl.GLES20;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,6 +10,7 @@ import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
@@ -21,6 +23,7 @@ public abstract class AbstractVertexShape implements Shape {
     protected FloatBuffer vertexBuffer;
     protected float[] vertices;
     protected int shaderProgram = -1;
+    private Scene2 scene;
 
 
     public void setShaderProgram(int program) {
@@ -61,4 +64,16 @@ public abstract class AbstractVertexShape implements Shape {
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
     }
 
+    @Override
+    public void notifyEvent(MotionEvent event) {}
+
+
+    @Override
+    public void setScene(Scene2 scene) {
+        this.scene = scene;
+    }
+
+    public Scene2 getScene() {
+        return scene;
+    }
 }

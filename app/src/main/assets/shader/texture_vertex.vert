@@ -4,6 +4,7 @@ attribute vec2 aTextureCoord;
 uniform mat4 uMVPMatrix;
 uniform vec2 uDimensions;
 uniform vec2 uScreen;
+uniform vec2 uPosition;
 
 varying vec2 vTextureCoord;
 varying vec4 vPosition;
@@ -20,6 +21,9 @@ void main() {
 
     tc.x = 1.0 - scale(tc.x);
     tc.y = 1.0 - scale(tc.y);
+
+    tc.y = tc.y + uPosition.y / uDimensions.y;
+    tc.x = tc.x + uPosition.x / uDimensions.x;
 
     vTextureCoord = tc;
     gl_Position = uMVPMatrix * aVertexPosition;
