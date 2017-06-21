@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <scene tex="entering_hall" shader="texture"> <!-- First obj = background! -->
     <!--<obj tex="some_room" shader="texture" /> -->
-    <human who="Mr. Mitozhirski" tex="mitozhirski" pos="-1.0 0" /> <!-- Float values -->
+    <human who="Mr. Mitozhirski" tex="mitozhirski" pos="-1.0 0" shader="blink" /> <!-- Float values -->
 </scene>

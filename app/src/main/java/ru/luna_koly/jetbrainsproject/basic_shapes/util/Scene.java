@@ -88,8 +88,6 @@ public class Scene {
 
         if (width < 0) width = -width;
         if (height < 0) height = -height;
-
-        Log.d("HUI", "" + width + " : " + height);
     }
 
     public void notifyEvent(MotionEvent event) {

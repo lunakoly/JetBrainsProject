@@ -35,7 +35,7 @@ public class LoadingInitializer implements Runnable {
             m.addActivationResult(new BasicActivator() {
                 @Override
                 public void activate() {
-                    Log.d(TAG, "CHLEN");
+                    Log.d(TAG, "Stop doing this!");
                 }
             });
 

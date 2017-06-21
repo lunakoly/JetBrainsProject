@@ -84,6 +84,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private void initShaderPrograms() {
         shaderPrograms.put("default", new ShaderProgram(context, "default_vertex.vert", "default_fragment.frag"));
         shaderPrograms.put("texture", new ShaderProgram(context, "texture_vertex.vert", "texture_fragment.frag"));
+        shaderPrograms.put("blink",   new ShaderProgram(context, "texture_vertex.vert", "blink_fragment.frag"));
     }
 
     public static ShaderProgram getDefaultShaderProgram() {

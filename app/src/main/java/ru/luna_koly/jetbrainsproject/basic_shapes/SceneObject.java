@@ -42,23 +42,7 @@ public class SceneObject implements Shape {
         this.texture = FileLoader.bitmapToTexture(bitmap);
         this.position = new vec3(0, 0, 0);
 
-        this.height = 2;
-        this.width = 2 * bitmap.getWidth() / (float) bitmap.getHeight();
-
-        float w = width / 2;
-        float h = height / 2;
-
-        float[] vertices = {
-                -w, +h, 0.0f,
-                -w, -h, 0.0f,
-                +w, -h, 0.0f,
-                +w, +h, 0.0f
-        };
-
-        Log.d(TAG, "drawObjects: " + Arrays.toString(vertices));
-
-        rect = new VertexRectangle(vertices);
-        rect.setShaderProgram(this.program);
+        setSize(2 * bitmap.getWidth() / (float) bitmap.getHeight(), 2);
     }
 
     public SceneObject(Context context, float width, float height, ShaderProgram program) {
@@ -83,8 +67,6 @@ public class SceneObject implements Shape {
                 +w, -h, 0.0f,
                 +w, +h, 0.0f
         };
-
-        Log.d(TAG, "drawObjects: " + Arrays.toString(vertices));
 
         rect = new VertexRectangle(vertices);
         rect.setShaderProgram(this.program);
@@ -156,6 +138,10 @@ public class SceneObject implements Shape {
         int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mvpMatrix, 0);
 
+        // global time
+        int uGlobalTime = GLES20.glGetUniformLocation(program, "uGlobalTime");
+        GLES20.glUniform1f(uGlobalTime, System.currentTimeMillis() % 1000);
+
 
         // update pos
         if (positionChanged) {
@@ -185,4 +171,8 @@ public class SceneObject implements Shape {
         return rect.getScene();
     }
 
+    public void setShaderProgram(ShaderProgram program) {
+        this.program = program.getCurrentProgram();
+        rect.setShaderProgram(this.program);
+    }
 }

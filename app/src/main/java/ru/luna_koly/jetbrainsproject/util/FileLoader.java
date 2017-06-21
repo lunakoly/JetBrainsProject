@@ -105,8 +105,6 @@ public class FileLoader {
     }
 
     public static int loadShader(int type, String source) {
-        Log.d(TAG, "" + (type == GLES20.GL_FRAGMENT_SHADER));
-
         int shader = GLES20.glCreateShader(type);
         GLES20.glShaderSource(shader, source);
         GLES20.glCompileShader(shader);
@@ -245,6 +243,7 @@ public class FileLoader {
 
     private static Human decodeHumanTag(Context context, XmlPullParser xpp) {
         String texturePath = "";
+        String shaderId = "";
         String name = "";
         float dx = 0;
         float dy = 0;
@@ -262,6 +261,9 @@ public class FileLoader {
                     String[] str = xpp.getAttributeValue(i).split(" ");
                     dx = Float.parseFloat(str[0]);
                     dy = Float.parseFloat(str[1]);
+                    break;
+                case "shader":
+                    shaderId = xpp.getAttributeValue(i);
             }
         }
 
@@ -270,6 +272,7 @@ public class FileLoader {
             human = new Human(context, name, texturePath);
             if (dx != 0) human.moveX(dx);
             if (dy != 0) human.moveY(dy);
+            if (shaderId.length() > 0) human.setShaderProgram(GameRenderer.getShaderProgram(shaderId));
 
         } else {
             human = null;
