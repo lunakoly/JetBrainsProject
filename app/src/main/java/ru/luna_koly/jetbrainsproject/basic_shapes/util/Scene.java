@@ -1,31 +1,30 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
-import android.content.Context;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 
-import ru.luna_koly.jetbrainsproject.Engine;
+import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
+import ru.luna_koly.jetbrainsproject.basic_shapes.Shape;
 
 /**
  * Created with love by luna_koly on 20.06.17.
  */
 
-public class Scene2 {
+public class Scene {
     private float width = 1;
     private float height = 1;
     private float depth = 0;
 
     private Camera camera;
     private ArrayList<Shape> objects = new ArrayList<>();
+    private ArrayList<Shape> UIs = new ArrayList<>();
 
 
-    public Scene2(float w, float h, float d) {
+    public Scene(float w, float h, float d) {
         this.width = w;
         this.height = h;
         this.depth = d;
@@ -34,15 +33,15 @@ public class Scene2 {
         camera.restrictToScene(this);
     }
 
-    public float getWidth() {
+    float getWidth() {
         return width;
     }
 
-    public float getHeight() {
+    float getHeight() {
         return height;
     }
 
-    public float getDepth() {
+    float getDepth() {
         return depth;
     }
 
@@ -50,19 +49,30 @@ public class Scene2 {
         return camera;
     }
 
-    public Scene2 add(Shape object) {
+    public Scene add(Shape object) {
         objects.add(object);
         object.setScene(this);
         return this;
     }
 
-    public void draw(float[] mvpMatrix) {
+    public Scene addUI(Shape object) {
+        UIs.add(object);
+        object.setScene(this);
+        return this;
+    }
+
+    public void drawObjects(float[] mvpMatrix) {
         for (Shape m : objects)
             m.draw(mvpMatrix);
     }
 
+    public void drawUI(float[] mvpMatrix) {
+        for (Shape m : UIs)
+            m.draw(mvpMatrix);
+    }
+
     public void cropToObject(SceneObject so) {
-        GameSurface gs = Engine.getInstance().getSurface();
+        GameSurface gs = GameRegistry.getSurface();
 
         this.width  = so.getWidth() * gs.getHeight() / gs.getWidth() - gs.getWidth() / gs.getHeight();
         this.height = so.getHeight() - 2;
@@ -78,4 +88,5 @@ public class Scene2 {
             s.notifyEvent(event);
         }
     }
+
 }

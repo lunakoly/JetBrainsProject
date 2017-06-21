@@ -5,11 +5,12 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
 
+import ru.luna_koly.jetbrainsproject.util.LoadingInitializer;
+
 public class GameActivity extends Activity {
     private static final String TAG = "game_activity";
 
     private GLSurfaceView gameView;
-    private Engine engine;
 
 
     @Override
@@ -17,13 +18,13 @@ public class GameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme_NoActionBar);     // hide title bar
 
-        engine = new Engine(this);
+        Engine engine = new Engine(this);
         gameView = engine.getSurface();
         setContentView(gameView);
 
         Log.d(TAG, "Created");
 
-        GameRegistry.addStartupAlgorithm(LoadingInitializer.getInstance());
+        GameRegistry.addStartupAlgorithm(new LoadingInitializer(this));
     }
 
     @Override

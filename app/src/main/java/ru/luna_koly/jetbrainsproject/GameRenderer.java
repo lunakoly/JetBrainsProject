@@ -10,11 +10,11 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created with love by luna_koly on 18.06.17.
  */
 
 public class GameRenderer implements GLSurfaceView.Renderer {
@@ -24,16 +24,18 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private static ShaderProgram textureShaderProgram;
 
     private Context context;
-    private Scene2 targetScene;
+    private Scene targetScene;
 
 
-    // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
-    private final float[] mMVPMatrix = new float[16];
+    // mMVPDynamicMatrix is an abbreviation for "Model View Projection Matrix"
+    private final float[] mMVPDynamicMatrix = new float[16];
+    private final float[] mMVPStaticMatrix  = new float[16];
     private final float[] mProjectionMatrix = new float[16];
-    private final float[] mViewMatrix = new float[16];
+    private final float[] mDynamicViewMatrix = new float[16];
+    private final float[] mStaticViewMatrix  = new float[16];
 
 
-    public GameRenderer(Context context) {
+    GameRenderer(Context context) {
         this.context = context;
     }
 
@@ -60,17 +62,22 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl10) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
-
         Camera c = targetScene.getCamera();
+
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, c.getX(), c.getY(), -3,
+        Matrix.setLookAtM(mDynamicViewMatrix, 0, c.getX(), c.getY(), -3,
                 c.getX(), c.getY(), 0f,
+                0f, 1.0f, 0.0f);
+        Matrix.setLookAtM(mStaticViewMatrix, 0, 0, 0, -3,
+                0f, 0f, 0f,
                 0f, 1.0f, 0.0f);
 
         // Calculate the projection and view transformation
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        Matrix.multiplyMM(mMVPDynamicMatrix, 0, mProjectionMatrix, 0, mDynamicViewMatrix, 0);
+        Matrix.multiplyMM(mMVPStaticMatrix, 0, mProjectionMatrix, 0, mStaticViewMatrix, 0);
 
-        targetScene.draw(mMVPMatrix);
+        targetScene.drawObjects(mMVPDynamicMatrix);
+        targetScene.drawUI(mMVPStaticMatrix);
     }
 
 
@@ -91,11 +98,12 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         textureShaderProgram = new ShaderProgram(context, "texture_vertex.vert", "texture_fragment.frag");
     }
 
-    public void setTargetScene(Scene2 targetScene) {
+    void setTargetScene(Scene targetScene) {
         this.targetScene = targetScene;
     }
 
-    public Scene2 getTargetScene() {
+    Scene getTargetScene() {
         return targetScene;
     }
+
 }

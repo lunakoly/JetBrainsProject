@@ -3,7 +3,6 @@ package ru.luna_koly.jetbrainsproject;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
-import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 /**
@@ -13,18 +12,16 @@ import android.util.Log;
 public class Engine {
     private static final String TAG = "engine";
 
-    private static Engine lastInstance;
-
     private Context context;
     private GameSurface surface;
     private GameRenderer renderer;
-    private GameRegistry registry;
 
 
-    public Engine(Context context) {
+    Engine(Context context) {
         this.context = context;
 
         surface = new GameSurface(context);
+        surface.setEngine(this);
 
         // check capability
         final ActivityManager activityManager =
@@ -44,27 +41,18 @@ public class Engine {
         renderer = new GameRenderer(context);
         surface.setRenderer(renderer);
 
-        // render only if there're some changes
-        //surface.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-
-        registry = new GameRegistry(this);
-        lastInstance = this;
+        new GameRegistry(this);
     }
 
-    public GameSurface getSurface() {
+    GameSurface getSurface() {
         return surface;
     }
 
-    public GameRenderer getRenderer() {
+    GameRenderer getRenderer() {
         return renderer;
     }
 
     public Context getContext() {
         return context;
     }
-
-    public static Engine getInstance() {
-        return lastInstance;
-    }
-
 }

@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ru.luna_koly.jetbrainsproject.MainActivity">
 
     <ImageView
+        android:contentDescription="@string/some_description"
         android:src="@drawable/small_wallpaper_1"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ImageSwitcher
-        android:id="@+id/bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ImageSwitcher>
 
     <Space
         android:id="@+id/spacer"
@@ -27,6 +21,7 @@
         android:layout_height="wrap_content" />
 
     <ImageButton
+        android:contentDescription="@string/some_description"
         android:id="@+id/bt_inventory"
         android:src="@drawable/small_icon_inventory"
         android:layout_above="@id/spacer"
@@ -38,6 +33,7 @@
         android:layout_height="60dp" />
 
     <ImageButton
+        android:contentDescription="@string/some_description"
         android:id="@+id/bt_play"
         android:src="@drawable/small_icon_play"
         android:layout_above="@id/bt_inventory"
@@ -49,6 +45,7 @@
         android:layout_height="60dp" />
 
     <ImageButton
+        android:contentDescription="@string/some_description"
         android:id="@+id/bt_diary"
         android:src="@drawable/small_icon_diary"
         android:layout_below="@id/spacer"
@@ -60,6 +57,7 @@
         android:layout_height="60dp" />
 
     <ImageButton
+        android:contentDescription="@string/some_description"
         android:id="@+id/bt_settings"
         android:src="@drawable/small_icon_settings"
         android:layout_below="@id/bt_diary"
@@ -81,13 +79,6 @@
         <fragment
             android:id="@+id/settings_fragment"
             android:name="ru.luna_koly.jetbrainsproject.fragments.SettingsFragment"
-            tools:layout="@layout/main_menu_settings_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <fragment
-            android:id="@+id/play_fragment"
-            android:name="ru.luna_koly.jetbrainsproject.fragments.PlayFragment"
             tools:layout="@layout/main_menu_settings_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

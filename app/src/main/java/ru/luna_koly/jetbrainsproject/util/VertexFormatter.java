@@ -1,8 +1,8 @@
-package ru.luna_koly.jetbrainsproject.basic_shapes.util;
-
-import android.util.Log;
+package ru.luna_koly.jetbrainsproject.util;
 
 import java.util.Arrays;
+
+import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
  * Created with love by iMac on 18.06.17.

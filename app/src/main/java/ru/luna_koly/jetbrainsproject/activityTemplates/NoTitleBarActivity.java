@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import ru.luna_koly.jetbrainsproject.R;
 
 /**
- * Created by user on 6/16/17.
+ * Created with love by luna_koly on 6/16/17.
  */
 
 public class NoTitleBarActivity extends AppCompatActivity {

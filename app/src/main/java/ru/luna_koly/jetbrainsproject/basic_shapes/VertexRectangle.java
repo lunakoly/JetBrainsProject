@@ -1,21 +1,10 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes;
 
-import android.opengl.GLES20;
-import android.util.Log;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.util.Arrays;
-
 import ru.luna_koly.jetbrainsproject.GameRenderer;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
+import ru.luna_koly.jetbrainsproject.util.VertexFormatter;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created with love by luna_koly on 18.06.17.
  */
 
 public class VertexRectangle extends AbstractVertexShape {
@@ -33,9 +22,5 @@ public class VertexRectangle extends AbstractVertexShape {
 
         // set to default
         shaderProgram = GameRenderer.getDefaultShaderProgram().getCurrentProgram();
-    }
-
-    public VertexRectangle(vec3 p1, vec3 p2, vec3 p3, vec3 p4) {
-        this(VertexFormatter.getVertices(p1, p2, p3, p4));
     }
 }

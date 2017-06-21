@@ -1,4 +1,4 @@
-package ru.luna_koly.jetbrainsproject.basic_shapes.util;
+package ru.luna_koly.jetbrainsproject.util.containers;
 
 /**
  * Created with love by luna_koly on 19.06.17.

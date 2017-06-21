@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +7,49 @@
 
     <TextView
         android:text="@string/settings_menu_sound"
+        android:id="@+id/title"
         style="@style/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <SeekBar
+        android:layout_below="@id/title"
+        android:id="@+id/seek_bar"
         style="@style/seek_bar"
-        android:background="@color/colorPrimary"
+        android:progress="25"
+        android:max="50"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <Space
+        android:layout_below="@id/seek_bar"
+        android:id="@+id/spacer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:padding="13dp"
+            android:layout_weight="1"
+            android:text="@string/delete_save_data"
+            style="@style/text"
+            android:textColor="@color/colorAccent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/delete_button"
+            android:contentDescription="@string/some_description"
+            android:src="@drawable/small_icon_cross"
+            android:background="@drawable/square_button_state_selector"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

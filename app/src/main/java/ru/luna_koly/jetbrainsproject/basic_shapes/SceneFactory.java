@@ -1,10 +1,7 @@
-package ru.luna_koly.jetbrainsproject.basic_shapes.util;
-
-import ru.luna_koly.jetbrainsproject.basic_shapes.VertexRectangle;
-import ru.luna_koly.jetbrainsproject.basic_shapes.VertexTriangle;
+package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created with love by luna_koly on 18.06.17.
  */
 
 public class SceneFactory {

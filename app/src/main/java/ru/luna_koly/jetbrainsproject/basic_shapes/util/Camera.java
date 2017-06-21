@@ -6,19 +6,11 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
 public class Camera {
     private float x, y, z;  // speed
-    private float zoom = 0;
-    private Scene2 scene = null;
-    private float velocityDX = 0;
-    private float velocityDY = 0;
-    private float velocityDZ = 0;
+    private Scene scene = null;
 
 
-    public Camera(float x, float y, float z) {
+    Camera(float x, float y, float z) {
         setPosition(x, y, z);
-    }
-
-    public Camera(vec3 position) {
-        setPosition(position);
     }
 
     public Camera setPosition(float x, float y, float z) {
@@ -26,14 +18,6 @@ public class Camera {
         this.y = y;
         this.z = z;
         return this;
-    }
-
-    public Camera setPosition(vec3 position) {
-        return setPosition(position.x, position.y, position.z);
-    }
-
-    public vec3 getPosition() {
-        return new vec3(x, y, z);
     }
 
     public Camera setX(float x) {
@@ -70,8 +54,6 @@ public class Camera {
         if (x > f) x = f;
         else if (x < -f) x = -f;
 
-        velocityDX = dx / 10;
-
         return this;
     }
 
@@ -81,8 +63,6 @@ public class Camera {
         float f = scene.getHeight() / 2;
         if (y > f) y = f;
         else if (y < -f) y = -f;
-
-        velocityDX = dy / 10;
 
         return this;
     }
@@ -94,8 +74,6 @@ public class Camera {
         if (z > f) z = f;
         else if (z < -f) z = -f;
 
-        velocityDZ = dz / 10;
-
         return this;
     }
 
@@ -106,19 +84,7 @@ public class Camera {
         return this;
     }
 
-    public float getZoom() {
-        return zoom;
-    }
-
-    public void setZoom(float zoom) {
-        this.zoom = zoom;
-    }
-
-    public void restrictToScene(Scene2 scene) {
+    void restrictToScene(Scene scene) {
         this.scene = scene;
-    }
-
-    public void continueMovement() {
-        move(velocityDX, velocityDY, velocityDZ);
     }
 }

@@ -3,23 +3,21 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
-import android.opengl.Matrix;
 import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.Arrays;
 
-import ru.luna_koly.jetbrainsproject.Engine;
-import ru.luna_koly.jetbrainsproject.FileLoader;
+import ru.luna_koly.jetbrainsproject.GameRegistry;
+import ru.luna_koly.jetbrainsproject.util.FileLoader;
 import ru.luna_koly.jetbrainsproject.GameSurface;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene2;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.Shape;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.VertexFormatter;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
+import ru.luna_koly.jetbrainsproject.util.VertexFormatter;
+import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
- * Created by user on 6/19/17.
+ * Created with love by luna_koly on 6/19/17.
  */
 
 public class SceneObject implements Shape {
@@ -57,7 +55,7 @@ public class SceneObject implements Shape {
                 +w, +h, 0.0f
         };
 
-        Log.d(TAG, "draw: " + Arrays.toString(vertices));
+        Log.d(TAG, "drawObjects: " + Arrays.toString(vertices));
 
         rect = new VertexRectangle(vertices);
         rect.setShaderProgram(this.program);
@@ -86,7 +84,7 @@ public class SceneObject implements Shape {
                 +w, +h, 0.0f
         };
 
-        Log.d(TAG, "draw: " + Arrays.toString(vertices));
+        Log.d(TAG, "drawObjects: " + Arrays.toString(vertices));
 
         rect = new VertexRectangle(vertices);
         rect.setShaderProgram(this.program);
@@ -116,21 +114,12 @@ public class SceneObject implements Shape {
         positionChanged = true;
     }
 
-    public void moveZ(float f) {
-        position = new vec3(position.x, position.y, position.z + f);
-        positionChanged = true;
-    }
-
     public float getWidth() {
         return width;
     }
 
     public float getHeight() {
         return height;
-    }
-
-    public Bitmap getBitmap() {
-        return bitmap;
     }
 
     @Override
@@ -149,7 +138,7 @@ public class SceneObject implements Shape {
 
         // pass screen
         int uScreen = GLES20.glGetUniformLocation(program, "uScreen");
-        GameSurface gs = Engine.getInstance().getSurface();
+        GameSurface gs = GameRegistry.getSurface();
         GLES20.glUniform2f(uScreen, gs.getWidth(), gs.getHeight());
 
         // pass dimensions
@@ -166,9 +155,6 @@ public class SceneObject implements Shape {
 
         int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, mvpMatrix, 0);
-
-        float[] translateM = new float[16];
-        Matrix.translateM(translateM, 0, mvpMatrix, 0, position.x, position.y, position.z);
 
 
         // update pos
@@ -191,11 +177,11 @@ public class SceneObject implements Shape {
     }
 
     @Override
-    public void setScene(Scene2 scene) {
+    public void setScene(Scene scene) {
         rect.setScene(scene);
     }
 
-    public Scene2 getScene() {
+    protected Scene getScene() {
         return rect.getScene();
     }
 

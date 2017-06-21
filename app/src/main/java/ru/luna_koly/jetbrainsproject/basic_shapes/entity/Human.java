@@ -1,22 +1,24 @@
-package ru.luna_koly.jetbrainsproject.basic_shapes.objects;
+package ru.luna_koly.jetbrainsproject.basic_shapes.entity;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.opengl.GLES20;
-import android.util.Log;
 import android.view.MotionEvent;
 
-import ru.luna_koly.jetbrainsproject.Engine;
+import java.util.ArrayList;
+
+import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.GameSurface;
+import ru.luna_koly.jetbrainsproject.basic_shapes.Actionable;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
-import ru.luna_koly.jetbrainsproject.basic_shapes.util.vec3;
+import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
- * Created by user on 6/21/17.
+ * Created with love by luna_koly on 6/21/17.
  */
 
-public class Human extends SceneObject {
+public class Human extends SceneObject implements Actionable {
+    private ArrayList<Actionable> results = new ArrayList<>();
+
     protected String name;
 
 
@@ -33,24 +35,18 @@ public class Human extends SceneObject {
 
     @Override
     public void notifyEvent(MotionEvent event) {
-        GameSurface gs = Engine.getInstance().getSurface();
+        GameSurface gs = GameRegistry.getSurface();
         vec3 position = getPosition();
         float aspect = getWidth() / getHeight();
 
         float y = event.getY() / gs.getHeight();
         float x = event.getX() / gs.getWidth();
 
-        Log.d(name, "XY " + x + " : " + y);
-
         float height = getHeight() / 2;
         float width = getWidth() / 2 * aspect;
 
-        Log.d(name, "WH/2 " + width + " : " + height);
-
         float dy = position.y - getScene().getCamera().getY();
         float dx = getScene().getCamera().getX() - position.x;
-
-        Log.d(name, "DXDY " + dx + " : " + dy);
 
         float yMin = (1.0f - height) / 2.0f - dy / 2;
         float yMax = yMin + height;
@@ -58,12 +54,24 @@ public class Human extends SceneObject {
         float xMin = (1.0f - width) / 2.0f + dx * aspect / 2.0f;
         float xMax = xMin + width;
 
-        //Log.d(name, "CHECK " + y + " : " + yMax + " : " + yMin);
-        Log.d(name, "CHECK " + x + " : " + xMax + " : " + xMin);
-
         if (y >  yMin && y < yMax &&
                 x >  xMin && x < xMax) {
-            Log.d(name, "FUCK U!!!");
+            activate();
         }
     }
+
+    @Override
+    public void activate() {
+        for (Actionable r : results)
+            r.activate();
+    }
+
+    void addActivationResult(Actionable result) {
+        results.add(result);
+    }
+
+    void removeActivationResult(Actionable result) {
+        results.remove(result);
+    }
+
 }

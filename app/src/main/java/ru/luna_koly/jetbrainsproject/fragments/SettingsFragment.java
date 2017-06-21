@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import ru.luna_koly.jetbrainsproject.R;
 
 /**
- * Created with love by iMac on 18.06.17.
+ * Created with love by luna_koly on 18.06.17.
  */
 
 public class SettingsFragment extends Fragment {

@@ -1,4 +1,4 @@
-package ru.luna_koly.jetbrainsproject.basic_shapes.util;
+package ru.luna_koly.jetbrainsproject.util.containers;
 
 /**
  * Created with love by iMac on 18.06.17.

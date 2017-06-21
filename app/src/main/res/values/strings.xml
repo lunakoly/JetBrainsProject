@@ -9,6 +9,8 @@
     <string name="play_select_save">Select Profile</string>
     <string name="profile">Profile:</string>
     <string name="empty">EMPTY</string>
+    <string name="delete_save_data">Delete save data?</string>
+    <string name="some_description">description</string>
 
     <integer name="fade_duration">2000</integer>
     <integer name="moveAnimTime">500</integer>
