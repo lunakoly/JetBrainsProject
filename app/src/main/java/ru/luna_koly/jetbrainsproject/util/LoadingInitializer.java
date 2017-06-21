@@ -5,6 +5,8 @@ import android.util.Log;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
+import ru.luna_koly.jetbrainsproject.basic_shapes.Actionable;
+import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
@@ -27,21 +29,17 @@ public class LoadingInitializer implements Runnable {
 
     @Override
     public void run() {
-        Scene scene = new Scene(10, 0, 0);
-        SceneObject so = new SceneObject(context,
-                GameRenderer.getTextureShaderProgram(), "entering_hall.png");
-        scene.add(so);
-        scene.cropToObject(so);
+        Scene scene = FileLoader.loadScene(context, "entering_hall");
+        Human m = scene.findHuman("Mr. Mitozhirski");
+        if (m != null)
+            m.addActivationResult(new BasicActivator() {
+                @Override
+                public void activate() {
+                    Log.d(TAG, "CHLEN");
+                }
+            });
 
-        so = new Human(context, "Mr. Mitozhirski", "char/mitozhirski_standing.png");
-        so.moveX(-1f);
-        scene.add(so);
-
-        so = new Player(context);
-        scene.add(so);
-
-        GameRegistry.addScene(scene, "entering_hall");
-        GameRegistry.runScene(GameRegistry.getScene("entering_hall"));
+        GameRegistry.runScene(scene);
     }
 
     public static void loadData() {

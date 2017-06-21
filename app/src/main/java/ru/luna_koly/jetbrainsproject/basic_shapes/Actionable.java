@@ -6,4 +6,5 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 
 public interface Actionable {
     void activate();
+    void addActivationResult(Actionable result);
 }

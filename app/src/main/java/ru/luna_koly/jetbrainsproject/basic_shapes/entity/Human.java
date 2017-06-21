@@ -66,11 +66,12 @@ public class Human extends SceneObject implements Actionable {
             r.activate();
     }
 
-    void addActivationResult(Actionable result) {
+    @Override
+    public void addActivationResult(Actionable result) {
         results.add(result);
     }
 
-    void removeActivationResult(Actionable result) {
+    public void removeActivationResult(Actionable result) {
         results.remove(result);
     }
 

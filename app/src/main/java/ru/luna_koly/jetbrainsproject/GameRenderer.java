@@ -6,6 +6,9 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -20,8 +23,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 public class GameRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "renderer";
 
-    private static ShaderProgram defaultShaderProgram;
-    private static ShaderProgram textureShaderProgram;
+    private static HashMap<String, ShaderProgram> shaderPrograms = new HashMap<>();
 
     private Context context;
     private Scene targetScene;
@@ -42,8 +44,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        initDefaultShaderProgram();
-        initTextureShaderProgram();
+        initShaderPrograms();
         Log.d(TAG, "Created & shader programs have been initialized");
 
         GameRegistry.runStartupAlgorithms();
@@ -80,22 +81,17 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         targetScene.drawUI(mMVPStaticMatrix);
     }
 
-
-
-    public static ShaderProgram getDefaultShaderProgram() {
-        return defaultShaderProgram;
+    private void initShaderPrograms() {
+        shaderPrograms.put("default", new ShaderProgram(context, "default_vertex.vert", "default_fragment.frag"));
+        shaderPrograms.put("texture", new ShaderProgram(context, "texture_vertex.vert", "texture_fragment.frag"));
     }
 
-    private void initDefaultShaderProgram() {
-        defaultShaderProgram = new ShaderProgram(context, "default_vertex.vert", "default_fragment.frag");
+    public static ShaderProgram getDefaultShaderProgram() {
+        return shaderPrograms.get("default");
     }
 
     public static ShaderProgram getTextureShaderProgram() {
-        return textureShaderProgram;
-    }
-
-    private void initTextureShaderProgram() {
-        textureShaderProgram = new ShaderProgram(context, "texture_vertex.vert", "texture_fragment.frag");
+        return shaderPrograms.get("texture");
     }
 
     void setTargetScene(Scene targetScene) {
@@ -106,4 +102,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
         return targetScene;
     }
 
+    public static ShaderProgram getShaderProgram(String shaderId) {
+        return shaderPrograms.get(shaderId);
+    }
 }

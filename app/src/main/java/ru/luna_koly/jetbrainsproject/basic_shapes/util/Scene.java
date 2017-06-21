@@ -1,5 +1,6 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -9,6 +10,7 @@ import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Shape;
+import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 
 /**
  * Created with love by luna_koly on 20.06.17.
@@ -31,6 +33,13 @@ public class Scene {
 
         camera = new Camera(0, 0, 0);
         camera.restrictToScene(this);
+    }
+
+    public Scene(Context context, ShaderProgram shaderProgram, String backgroundPath) {
+        this(0, 0, 0);
+        SceneObject so = new SceneObject(context, shaderProgram, backgroundPath);
+        add(so);
+        cropToObject(so);
     }
 
     float getWidth() {
@@ -89,4 +98,16 @@ public class Scene {
         }
     }
 
+    public ArrayList<Shape> getObjects() {
+        return objects;
+    }
+
+    public Human findHuman(String name) {
+        for (Shape h : objects)
+            if (h instanceof Human)
+                if (((Human) h).askName().equals(name))
+                    return (Human) h;
+
+        return null;
+    }
 }
