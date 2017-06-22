@@ -5,7 +5,9 @@ import android.util.Log;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
+import ru.luna_koly.jetbrainsproject.basic_shapes.SceneFactory;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
+import ru.luna_koly.jetbrainsproject.basic_shapes.ui.StatusBar;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 
 /**
@@ -34,6 +36,9 @@ public class LoadingInitializer implements Runnable {
                     Log.d(TAG, "Stop doing this!");
                 }
             });
+
+        scene.addUI(new StatusBar(context));
+        scene.addUI(new StatusBar(context, 0, -0.09f));
 
         GameRegistry.runScene(scene);
     }

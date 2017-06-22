@@ -3,13 +3,12 @@ package ru.luna_koly.jetbrainsproject.basic_shapes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
+import android.util.Log;
 import android.view.MotionEvent;
 
-import ru.luna_koly.jetbrainsproject.GameRegistry;
-import ru.luna_koly.jetbrainsproject.util.FileLoader;
-import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
+import ru.luna_koly.jetbrainsproject.util.FileLoader;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
 import ru.luna_koly.jetbrainsproject.util.VertexFormatter;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
@@ -26,7 +25,7 @@ public class SceneObject implements Shape {
 
     private Context context;
     private float width, height;
-    private int program;
+    protected int program;
     private int texture;
     private Bitmap bitmap;
     private boolean positionChanged;
@@ -102,16 +101,7 @@ public class SceneObject implements Shape {
         return height;
     }
 
-    @Override
-    public void draw(Uniforms u) {
-        GLES20.glUseProgram(program);
-
-        int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
-        GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
-
-        int texturePositionAttribute = GLES20.glGetAttribLocation(program, "aTextureCoord");
-        GLES20.glEnableVertexAttribArray(texturePositionAttribute);
-
+    protected void externalDraw(int vertexPositionAttribute, int texturePositionAttribute, Uniforms u) {
         // pass dimensions
         int uDimensions = GLES20.glGetUniformLocation(program, "uDimensions");
         GLES20.glUniform2f(uDimensions, this.width, this.height);
@@ -149,6 +139,19 @@ public class SceneObject implements Shape {
 
         rect.addVertexAttribPointer(texturePositionAttribute);
         rect.externalDraw(vertexPositionAttribute);
+    }
+
+    @Override
+    public void draw(Uniforms u) {
+        GLES20.glUseProgram(program);
+
+        int vertexPositionAttribute = GLES20.glGetAttribLocation(program, "aVertexPosition");
+        GLES20.glEnableVertexAttribArray(vertexPositionAttribute);
+
+        int texturePositionAttribute = GLES20.glGetAttribLocation(program, "aTextureCoord");
+        GLES20.glEnableVertexAttribArray(texturePositionAttribute);
+
+        externalDraw(vertexPositionAttribute, texturePositionAttribute, u);
 
         GLES20.glDisableVertexAttribArray(vertexPositionAttribute);
         GLES20.glDisableVertexAttribArray(texturePositionAttribute);

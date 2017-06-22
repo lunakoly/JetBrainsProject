@@ -10,4 +10,5 @@ public class Uniforms {
     public float[] mvpMatrix = new float[16];
     public long globalTime;
     public vec2 screen;
+    public float status;
 }
