@@ -59,7 +59,15 @@ public class GameRegistry {
         return lastInstance;
     }
 
+    public static GameRegistry getInstance() {
+        return lastInstance;
+    }
+
     public static GameSurface getSurface() {
         return lastInstance.engine.getSurface();
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }

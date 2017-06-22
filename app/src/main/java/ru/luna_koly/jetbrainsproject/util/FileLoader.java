@@ -14,7 +14,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
@@ -24,6 +23,10 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 import ru.luna_koly.jetbrainsproject.dialogs.Replica;
+import ru.luna_koly.jetbrainsproject.graph.Graph;
+import ru.luna_koly.jetbrainsproject.graph.GraphVertex;
+import ru.luna_koly.jetbrainsproject.util.containers.vec2;
+import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
  * Created with love by luna_koly on 19.06.17.
@@ -35,6 +38,7 @@ public class FileLoader {
     private static final String SHADER_PATH = "shader/";
     private static final String SCENES_PATH = "scenes/";
     private static final String DIALOGS_PATH = "dialogs/";
+    private static final String GRAPHS_PATH = "graphs/";
 
     private static String readStream(InputStream is) {
         Scanner scn = new Scanner(is);
@@ -163,7 +167,7 @@ public class FileLoader {
 
         }
 
-        return new Scene(0, 0, 0);
+        return new Scene(context, 0, 0, 0);
     }
 
     private static Scene readScene(Context context, XmlPullParser xpp, String id) throws IOException, XmlPullParserException {
@@ -199,9 +203,10 @@ public class FileLoader {
         }
 
         if (scene == null)
-            scene = new Scene(0, 0, 0);
+            scene = new Scene(context, 0, 0, 0);
 
         GameRegistry.addScene(scene, id);
+        scene.setGraph(FileLoader.loadGraph(context, id));
 
         for (SceneObject o : objects)
             scene.add(o);
@@ -238,7 +243,7 @@ public class FileLoader {
     }
 
     private static Scene decodeSceneTag(Context context, XmlPullParser xpp) {
-        Scene scene = new Scene(0, 0, 0);
+        Scene scene = new Scene(context, 0, 0, 0);
         SceneObject object = decodeObjectTag(context, xpp);
         scene.add(object);
         scene.cropToObject(object);
@@ -297,7 +302,7 @@ public class FileLoader {
             return readDialog(context, xpp, path);
 
         } catch (XmlPullParserException | IOException | IllegalArgumentException e) {
-            Log.e(TAG, "Error loading scene " + path);
+            Log.e(TAG, "Error loading dialog " + path);
             e.printStackTrace();
         }
 
@@ -356,5 +361,72 @@ public class FileLoader {
 
         dialog.put(id, r);
         return dialog;
+    }
+
+    public static Graph loadGraph(Context context, String path) {
+        try {
+            XmlPullParser xpp = Xml.newPullParser();
+            xpp.setInput(streamFile(context, GRAPHS_PATH + path + ".xml"), null);
+            return readGraph(context, xpp, path);
+
+        } catch (XmlPullParserException | IOException | IllegalArgumentException e) {
+            Log.e(TAG, "Error loading graph " + path);
+            e.printStackTrace();
+        }
+
+        return new Graph();
+    }
+
+    private static Graph readGraph(Context context, XmlPullParser xpp, String path) throws XmlPullParserException, IOException {
+        Graph graph = new Graph();
+
+        while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
+            switch (xpp.getEventType()) {
+                case XmlPullParser.START_DOCUMENT: break;
+                case XmlPullParser.START_TAG:
+                    if (xpp.getName().equals("vert")) {
+                        graph = addVertex(context, xpp, graph);
+                    }
+            }
+
+            xpp.next();
+        }
+
+        return graph;
+    }
+
+    private static Graph addVertex(Context context, XmlPullParser xpp, Graph graph) {
+        String id = "";
+        String[] str;
+        GraphVertex r = new GraphVertex();
+
+        for (int i = 0; i < xpp.getAttributeCount(); i++) {
+            switch (xpp.getAttributeName(i)) {
+                case "pos":
+                    str = xpp.getAttributeValue(i).split(" ");
+                    r.position = new vec3(
+                            Float.parseFloat(str[0]),
+                            Float.parseFloat(str[1]),
+                            0);
+                    break;
+
+                case "id":
+                    id = xpp.getAttributeValue(i);
+                    break;
+
+                case "next":
+                    str = xpp.getAttributeValue(i).split(" ");
+                    r.nextVertices = new String[str.length];
+                    for (int j = 0; j < str.length; j++)
+                        r.nextVertices[j] = str[j];
+                    break;
+            }
+        }
+
+        if (id.length() == 0)
+            return graph;
+
+        graph.put(id, r);
+        return graph;
     }
 }

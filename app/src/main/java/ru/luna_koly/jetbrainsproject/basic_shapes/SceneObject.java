@@ -75,7 +75,7 @@ public class SceneObject implements Shape {
     }
 
     public void setPosition(vec3 position) {
-        this.position = position;
+        this.position = new vec3(-position.x, position.y, position.z);
         positionChanged = true;
     }
 

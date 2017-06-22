@@ -1,7 +1,6 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -11,6 +10,9 @@ import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Shape;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
+import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
+import ru.luna_koly.jetbrainsproject.basic_shapes.ui.StatusBar;
+import ru.luna_koly.jetbrainsproject.graph.Graph;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
 
 /**
@@ -22,25 +24,42 @@ public class Scene {
     private float height = 1;
     private float depth = 0;
 
+    private Context context;
     private Camera camera;
+    private Graph graph = null;
+    private Player player;
+    private StatusBar authority;
+    private StatusBar adequacy;
+
     private ArrayList<Shape> objects = new ArrayList<>();
     private ArrayList<Shape> UIs = new ArrayList<>();
 
 
-    public Scene(float w, float h, float d) {
+    public Scene(Context context, float w, float h, float d) {
+        this.context = context;
         this.width = w;
         this.height = h;
         this.depth = d;
 
         camera = new Camera(0, 0, 0);
         camera.restrictToScene(this);
+        addPlayerDate();
     }
 
     public Scene(Context context, ShaderProgram shaderProgram, String backgroundPath) {
-        this(0, 0, 0);
+        this(context, 0, 0, 0);
         SceneObject so = new SceneObject(context, shaderProgram, backgroundPath);
         add(so);
         cropToObject(so);
+    }
+
+    private void addPlayerDate() {
+        authority = new StatusBar(context);
+        adequacy = new StatusBar(context, 0, -0.09f);
+        player = new Player(context);
+
+        addUI(authority);
+        addUI(adequacy);
     }
 
     float getWidth() {
@@ -74,6 +93,8 @@ public class Scene {
     public void drawObjects(Uniforms uniforms) {
         for (Shape m : objects)
             m.draw(uniforms);
+
+        player.draw(uniforms);
     }
 
     public void drawUI(Uniforms uniforms) {
@@ -108,5 +129,17 @@ public class Scene {
                     return (Human) h;
 
         return null;
+    }
+
+    public void setGraph(Graph graph) {
+        this.graph = graph;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }
