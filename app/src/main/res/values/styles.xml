@@ -22,6 +22,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="text_white">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
     <style name="seek_bar">
 
     </style>
