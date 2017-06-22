@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
+import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 
 /**
  * Created with love by luna_koly on 20.06.17.
@@ -14,6 +15,7 @@ public class GameRegistry {
 
     private Engine engine;
     private HashMap<String, Scene> scenes = new HashMap<>();
+    private HashMap<String, Dialog> dialogs = new HashMap<>();
     private ArrayList<Runnable> startupAlgorithms = new ArrayList<>();
 
 
@@ -27,8 +29,17 @@ public class GameRegistry {
         return lastInstance;
     }
 
+    public static GameRegistry addDialog(Dialog dialog, String key) {
+        lastInstance.dialogs.put(key, dialog);
+        return lastInstance;
+    }
+
     public static Scene getScene(String key) {
         return lastInstance.scenes.get(key);
+    }
+
+    public static Dialog getDialog(String key) {
+        return lastInstance.dialogs.get(key);
     }
 
     public static GameRegistry runScene(Scene scene) {

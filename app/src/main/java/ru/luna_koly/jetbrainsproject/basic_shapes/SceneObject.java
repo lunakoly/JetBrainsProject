@@ -175,4 +175,8 @@ public class SceneObject implements Shape {
         this.program = program.getCurrentProgram();
         rect.setShaderProgram(this.program);
     }
+
+    public Context getContext() {
+        return context;
+    }
 }

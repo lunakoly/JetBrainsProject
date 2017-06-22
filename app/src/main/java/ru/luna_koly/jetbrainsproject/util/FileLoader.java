@@ -14,6 +14,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
@@ -21,6 +22,8 @@ import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
+import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
+import ru.luna_koly.jetbrainsproject.dialogs.Replica;
 
 /**
  * Created with love by luna_koly on 19.06.17.
@@ -31,6 +34,7 @@ public class FileLoader {
     private static final String TEXTURES_PATH = "textures/";
     private static final String SHADER_PATH = "shader/";
     private static final String SCENES_PATH = "scenes/";
+    private static final String DIALOGS_PATH = "dialogs/";
 
     private static String readStream(InputStream is) {
         Scanner scn = new Scanner(is);
@@ -244,6 +248,7 @@ public class FileLoader {
     private static Human decodeHumanTag(Context context, XmlPullParser xpp) {
         String texturePath = "";
         String shaderId = "";
+        String dialogPath = "";
         String name = "";
         float dx = 0;
         float dy = 0;
@@ -252,7 +257,8 @@ public class FileLoader {
         for (int i = 0; i < xpp.getAttributeCount(); i++) {
             switch (xpp.getAttributeName(i)) {
                 case "tex":
-                    texturePath = "char/" + xpp.getAttributeValue(i) + "_standing.png";
+                    dialogPath = xpp.getAttributeValue(i);
+                    texturePath = "char/" + dialogPath + "_standing.png";
                     break;
                 case "who":
                     name = xpp.getAttributeValue(i);
@@ -267,12 +273,15 @@ public class FileLoader {
             }
         }
 
+        Dialog d = loadDialog(context, dialogPath);
+
         if (texturePath.length() > 0 &&
                 name.length() > 0) {
             human = new Human(context, name, texturePath);
             if (dx != 0) human.moveX(dx);
             if (dy != 0) human.moveY(dy);
             if (shaderId.length() > 0) human.setShaderProgram(GameRenderer.getShaderProgram(shaderId));
+            if (!d.isEmpty()) human.addDialog(d);
 
         } else {
             human = null;
@@ -281,4 +290,72 @@ public class FileLoader {
         return human;
     }
 
+    public static Dialog loadDialog(Context context, String path) {
+        try {
+            XmlPullParser xpp = Xml.newPullParser();
+            xpp.setInput(streamFile(context, DIALOGS_PATH + path + ".xml"), null);
+            return readDialog(context, xpp, path);
+
+        } catch (XmlPullParserException | IOException e) {
+            Log.e(TAG, "Error loading scene " + path);
+            e.printStackTrace();
+
+        }
+
+        return new Dialog();
+    }
+
+    private static Dialog readDialog(Context context, XmlPullParser xpp, String id) throws XmlPullParserException, IOException {
+        Dialog dialog = new Dialog();
+
+        while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
+            switch (xpp.getEventType()) {
+                case XmlPullParser.START_DOCUMENT: break;
+                case XmlPullParser.START_TAG:
+                    if (xpp.getName().equals("rep")) {
+                        dialog = addReplica(context, xpp, dialog);
+                    }
+            }
+
+            xpp.next();
+        }
+
+        GameRegistry.addDialog(dialog, id);
+        return dialog;
+    }
+
+    private static Dialog addReplica(Context context, XmlPullParser xpp, Dialog dialog) {
+        String id = "";
+        Replica r = new Replica();
+
+        for (int i = 0; i < xpp.getAttributeCount(); i++) {
+            switch (xpp.getAttributeName(i)) {
+                case "who":
+                    r.person = xpp.getAttributeValue(i);
+                    break;
+
+                case "id":
+                    id = xpp.getAttributeValue(i);
+                    break;
+
+                case "next":
+                    String[] str = xpp.getAttributeValue(i).split(" ");
+                    r.nextReplicas = new String[str.length];
+                    for (int j = 0; j < str.length; j++)
+                        r.nextReplicas[j] = str[j];
+                    break;
+
+                case "text":
+                    r.text = xpp.getAttributeValue(i);
+            }
+        }
+
+        if (r.person.equals("nobody")) r.person = "Charly";
+
+        if (id.length() == 0)
+            return dialog;
+
+        dialog.put(id, r);
+        return dialog;
+    }
 }

@@ -1,6 +1,8 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.entity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -9,7 +11,10 @@ import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Actionable;
+import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
+import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
+import ru.luna_koly.jetbrainsproject.dialogs.DialogActivity;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
@@ -75,4 +80,14 @@ public class Human extends SceneObject implements Actionable {
         results.remove(result);
     }
 
+    public void addDialog(final Dialog d) {
+        addActivationResult(new BasicActivator() {
+            @Override
+            public void activate() {
+                Intent i = new Intent(getContext(), DialogActivity.class);
+                DialogActivity.setDialog(d);
+                getContext().startActivity(i);
+            }
+        });
+    }
 }

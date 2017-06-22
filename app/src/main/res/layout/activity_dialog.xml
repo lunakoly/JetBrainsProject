@@ -18,14 +18,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:background="@color/colorPrimary"
+            android:padding="10dp"
             android:layout_margin="3dp"
             android:layout_weight="3"
             android:layout_width="0dp"
             android:layout_height="match_parent">
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/logs"
+                style="@style/text_white"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
 
         <ScrollView
             android:layout_marginRight="3dp"
@@ -35,65 +44,10 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/button_handler"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <Button
-                    android:text="I don't think it's a good idea"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="U should have gone there before"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="this is some long text that might not fit in this small button"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="And?..."
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="More"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="Lorem ipsum dolor sit ammet"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <Button
-                    android:text="final one"
-                    style="@style/text_white"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
