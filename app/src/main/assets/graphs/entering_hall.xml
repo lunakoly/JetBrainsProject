@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<graph>
+
+    <vert id="1" pos="-1 0" next="2" />
+    <vert id="2" pos="1 0" next="1" />
+
+</graph>

@@ -9,6 +9,7 @@ import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneFactory;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
+import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.ui.StatusBar;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
@@ -34,6 +35,7 @@ public class LoadingInitializer implements Runnable {
 
         scene.addUI(new StatusBar(context));
         scene.addUI(new StatusBar(context, 0, -0.09f));
+        scene.add(new Player(context));
 
         GameRegistry.runScene(scene);
     }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<scene tex="geography_room" shader="texture">
+    <human who="Mr. Walther" tex="walther" pos="-1.2 0" shader="blink" />
+</scene>

@@ -296,10 +296,9 @@ public class FileLoader {
             xpp.setInput(streamFile(context, DIALOGS_PATH + path + ".xml"), null);
             return readDialog(context, xpp, path);
 
-        } catch (XmlPullParserException | IOException e) {
+        } catch (XmlPullParserException | IOException | IllegalArgumentException e) {
             Log.e(TAG, "Error loading scene " + path);
             e.printStackTrace();
-
         }
 
         return new Dialog();

@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dialog>
-    <rep who="Mr. Mitozhirski" id="0" next="1 2 3"
-        text="Hi man" />
 
-    <rep id="1" next="4"
-        text="Mr. Mitoxhirski!" />
+<rep who="Mr. Mitozhirski" next="1 2" id="0"
+text="Hey! Are you first time in school? Lessons started 10 minutes ago!" />
 
-    <rep id="2" next="5"
-        text="Not now, dude" />
+<rep  next="3" id="1"
+text="Well, yes, I've recently entered." />
 
-    <rep id="3" next="6"
-        text="..." />
+<rep next="3" id="2" 
+text="It's the first time I'm late"/>
 
-    <rep who="Mr. Mitozhirski" id="4"
-        text="Yes that's me!" />
+<rep who="Mr. Mitozhirski" next="5 6" id="3"
+text="You are a student, and you have responsibilities!" />	
 
-    <rep who="Mr. Mitozhirski" id="5"
-        text="WAT?" />
+<rep next="7" id="5" 
+text="..." />
 
-    <rep who="Mr. Mitozhirski" id="6"
-        text="Silent bitch" />
+
+<rep next="7" id="6" 
+text="Can I go to the lesson?!" />
+
+<rep who="Mr. Mitozhirski" next="8 9" id="7" 
+text="Stop! Where's your school uniform?" />
+
+<rep next="10" id="8" 
+text="What? School uniform? never heared." />
+
+<rep next="11" id="9" 
+text="Hmm...at home...it is being washed right now." />
+
+<rep who="Mr. Mitozhirski" next="12" id="10" 
+text="You've got problems, dude." />
+
+<rep who="Mr. Mitozhirski" next="12" id="11" 
+text="Say, I believed it" />
+
+<rep who="Mr. Mitozhirski"  id="12" 
+text="Hurry up! Go to the lesson!"/>
 
 </dialog>

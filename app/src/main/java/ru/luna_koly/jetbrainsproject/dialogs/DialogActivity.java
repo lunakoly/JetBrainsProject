@@ -1,6 +1,7 @@
 package ru.luna_koly.jetbrainsproject.dialogs;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,9 +96,12 @@ public class DialogActivity extends NoTitleBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (r.nextReplicas.length > 0)
+                if (r.nextReplicas.length > 0) {
                     rep(r);
                     runReplica(r.nextReplicas[0]);
+                } else {
+                    finish();
+                }
             }
         });
 
