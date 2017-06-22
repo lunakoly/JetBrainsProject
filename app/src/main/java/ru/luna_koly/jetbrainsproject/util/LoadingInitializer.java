@@ -25,7 +25,6 @@ public class LoadingInitializer implements Runnable {
     @Override
     public void run() {
         Scene scene = FileLoader.loadScene(context, "entering_hall");
-        scene.getPlayer().setPosition(scene.getGraph().get("0").position);
         GameRegistry.runScene(scene);
     }
 

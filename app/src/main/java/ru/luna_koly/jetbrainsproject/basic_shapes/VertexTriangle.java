@@ -15,6 +15,7 @@ public class VertexTriangle extends AbstractVertexShape {
             this.vertices = vertices;
 
         genBuffer();
+        saveDefaultVertices();
 
         // set to default
         shaderProgram = GameRenderer.getDefaultShaderProgram().getCurrentProgram();

@@ -17,6 +17,7 @@ import ru.luna_koly.jetbrainsproject.util.Uniforms;
 abstract class AbstractVertexShape implements Shape {
     private FloatBuffer vertexBuffer;
     float[] vertices;
+    float[] defaultVertices;
     int shaderProgram = -1;
     private Scene scene;
 
@@ -34,6 +35,14 @@ abstract class AbstractVertexShape implements Shape {
         vertexBuffer.position(0);
     }
 
+    void saveDefaultVertices() {
+        defaultVertices = new float[vertices.length];
+        System.arraycopy(vertices, 0, defaultVertices, 0, vertices.length);
+    }
+
+    void resetVertices() {
+        System.arraycopy(defaultVertices, 0, vertices, 0, defaultVertices.length);
+    }
 
     void addVertexAttribPointer(int vertexAttribPointer) {
         GLES20.glVertexAttribPointer(vertexAttribPointer, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer);
@@ -60,7 +69,9 @@ abstract class AbstractVertexShape implements Shape {
     }
 
     @Override
-    public void notifyEvent(MotionEvent event) {}
+    public boolean notifyEvent(MotionEvent event) {
+        return false;
+    }
 
 
     @Override

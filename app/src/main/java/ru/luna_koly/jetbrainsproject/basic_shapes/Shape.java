@@ -11,6 +11,6 @@ import ru.luna_koly.jetbrainsproject.util.Uniforms;
 
 public interface Shape {
     void draw(Uniforms uniforms);
-    void notifyEvent(MotionEvent event);
+    boolean notifyEvent(MotionEvent event);
     void setScene(Scene scene);
 }

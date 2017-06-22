@@ -6,6 +6,8 @@ import android.opengl.GLES20;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.util.Arrays;
+
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
 import ru.luna_koly.jetbrainsproject.util.FileLoader;
@@ -102,6 +104,14 @@ public class SceneObject implements Shape {
     }
 
     protected void externalDraw(int vertexPositionAttribute, int texturePositionAttribute, Uniforms u) {
+        // update pos
+        if (positionChanged) {
+            rect.resetVertices();
+            rect.vertices = VertexFormatter.translateToPosition(position, rect.vertices);
+            rect.genBuffer();
+            positionChanged = false;
+        }
+
         // pass dimensions
         int uDimensions = GLES20.glGetUniformLocation(program, "uDimensions");
         GLES20.glUniform2f(uDimensions, this.width, this.height);
@@ -122,20 +132,13 @@ public class SceneObject implements Shape {
         int textureHandler = GLES20.glGetUniformLocation(program, "uTextureCoord");
         GLES20.glUniform1i(textureHandler, 0);
 
-        int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, u.mvpMatrix, 0);
-
         // global time
         int uGlobalTime = GLES20.glGetUniformLocation(program, "uGlobalTime");
         GLES20.glUniform1f(uGlobalTime, u.globalTime);
 
 
-        // update pos
-        if (positionChanged) {
-            rect.vertices = VertexFormatter.translateToPosition(position, rect.vertices);
-            rect.genBuffer();
-            positionChanged = false;
-        }
+        int uMVPMatrix = GLES20.glGetUniformLocation(program, "uMVPMatrix");
+        GLES20.glUniformMatrix4fv(uMVPMatrix, 1, false, u.mvpMatrix, 0);
 
         rect.addVertexAttribPointer(texturePositionAttribute);
         rect.externalDraw(vertexPositionAttribute);
@@ -158,8 +161,8 @@ public class SceneObject implements Shape {
     }
 
     @Override
-    public void notifyEvent(MotionEvent event) {
-
+    public boolean notifyEvent(MotionEvent event) {
+        return false;
     }
 
     @Override

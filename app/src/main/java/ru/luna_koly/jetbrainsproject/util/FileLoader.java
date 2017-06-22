@@ -208,6 +208,9 @@ public class FileLoader {
         GameRegistry.addScene(scene, id);
         scene.setGraph(FileLoader.loadGraph(context, id));
 
+        if (scene.getGraph().getMode().equals("debug"))
+            scene.lightGraph();
+
         for (SceneObject o : objects)
             scene.add(o);
 
@@ -384,8 +387,13 @@ public class FileLoader {
             switch (xpp.getEventType()) {
                 case XmlPullParser.START_DOCUMENT: break;
                 case XmlPullParser.START_TAG:
-                    if (xpp.getName().equals("vert")) {
-                        graph = addVertex(context, xpp, graph);
+
+                    switch (xpp.getName()) {
+                        case "graph":
+                            graph.setMode(addMode(context, xpp));
+                            break;
+                        case "vert":
+                            graph = addVertex(context, xpp, graph);
                     }
             }
 
@@ -395,8 +403,15 @@ public class FileLoader {
         return graph;
     }
 
+    private static String addMode(Context context, XmlPullParser xpp) {
+        for (int i = 0; i < xpp.getAttributeCount(); i++)
+            if (xpp.getAttributeName(i).equals("mode"))
+                return xpp.getAttributeValue(i);
+
+        return "";
+    }
+
     private static Graph addVertex(Context context, XmlPullParser xpp, Graph graph) {
-        String id = "";
         String[] str;
         GraphVertex r = new GraphVertex();
 
@@ -404,14 +419,13 @@ public class FileLoader {
             switch (xpp.getAttributeName(i)) {
                 case "pos":
                     str = xpp.getAttributeValue(i).split(" ");
-                    r.position = new vec3(
+                    r.position = new vec2(
                             Float.parseFloat(str[0]),
-                            Float.parseFloat(str[1]),
-                            0);
+                            Float.parseFloat(str[1]));
                     break;
 
                 case "id":
-                    id = xpp.getAttributeValue(i);
+                    r.id = xpp.getAttributeValue(i);
                     break;
 
                 case "next":
@@ -423,10 +437,10 @@ public class FileLoader {
             }
         }
 
-        if (id.length() == 0)
+        if (r.id.length() == 0)
             return graph;
 
-        graph.put(id, r);
+        graph.put(r.id, r);
         return graph;
     }
 }

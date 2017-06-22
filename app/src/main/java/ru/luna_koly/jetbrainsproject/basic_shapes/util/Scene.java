@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import ru.luna_koly.jetbrainsproject.GameRegistry;
+import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Shape;
@@ -13,7 +15,10 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.ui.StatusBar;
 import ru.luna_koly.jetbrainsproject.graph.Graph;
+import ru.luna_koly.jetbrainsproject.graph.GraphVertex;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
+import ru.luna_koly.jetbrainsproject.util.containers.vec2;
+import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
  * Created with love by luna_koly on 20.06.17.
@@ -91,15 +96,19 @@ public class Scene {
     }
 
     public void drawObjects(Uniforms uniforms) {
-        for (Shape m : objects)
-            m.draw(uniforms);
+        try {
+            for (Shape m : objects)
+                m.draw(uniforms);
 
-        player.draw(uniforms);
+            player.draw(uniforms);
+        } catch (ConcurrentModificationException e) {}
     }
 
     public void drawUI(Uniforms uniforms) {
-        for (Shape m : UIs)
-            m.draw(uniforms);
+        try {
+            for (Shape m : UIs)
+                m.draw(uniforms);
+        } catch (ConcurrentModificationException e) {}
     }
 
     public void cropToObject(SceneObject so) {
@@ -112,10 +121,35 @@ public class Scene {
         if (height < 0) height = -height;
     }
 
+    public void putPlayer(vec2 pos) {
+        player.setPosition(new vec3(pos.x, pos.y, 0));
+    }
+
     public void notifyEvent(MotionEvent event) {
-        for (Shape s : objects) {
-            s.notifyEvent(event);
+        for (int i = objects.size() - 1; i >= 0; i--) {
+            if (objects.get(i).notifyEvent(event))
+                return;
         }
+
+        GameSurface s = GameRegistry.getSurface();
+        float y = event.getY() / s.getHeight() * 2.0f - 1;
+        float x = (event.getX() / s.getWidth() * 2.0f - 1) * s.getWidth() / s.getHeight();
+
+        x -= camera.getX();
+        y += camera.getY();
+
+        GraphVertex destination = graph.findNearestGraphPoint(new vec2(x, y));
+
+        //mark(destination.position);
+        putPlayer(destination.position);
+    }
+
+    private SceneObject mark(vec2 pos) {
+        SceneObject so = new SceneObject(context, 0.2f, 0.2f, GameRenderer.getDefaultShaderProgram());
+        so.moveX(pos.x);
+        so.moveY(pos.y);
+        add(so);
+        return so;
     }
 
     public ArrayList<Shape> getObjects() {
@@ -133,6 +167,14 @@ public class Scene {
 
     public void setGraph(Graph graph) {
         this.graph = graph;
+    }
+
+    public void lightGraph() {
+        String[] keys = new String[0];
+        keys = graph.keySet().toArray(keys);
+
+        for (int i = 0; i < keys.length; i++)
+            mark(graph.get(keys[i]).position);
     }
 
     public Graph getGraph() {

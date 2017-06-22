@@ -19,6 +19,7 @@ public class VertexRectangle extends AbstractVertexShape {
 
         this.vertices = VertexFormatter.getTriadOfPattern(vertices, drawOrder);
         genBuffer();
+        saveDefaultVertices();
 
         // set to default
         shaderProgram = GameRenderer.getDefaultShaderProgram().getCurrentProgram();
