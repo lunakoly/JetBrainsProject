@@ -55,7 +55,7 @@ public class Scene {
 
     public Scene(Context context, ShaderProgram shaderProgram, String backgroundPath) {
         this(context, 0, 0, 0);
-        SceneObject so = new SceneObject(context, shaderProgram, backgroundPath);
+        SceneObject so = new SceneObject(context, shaderProgram, new Texture(context, backgroundPath, 1, 1000));
         add(so);
         cropToObject(so);
     }
@@ -64,6 +64,10 @@ public class Scene {
         authority = new StatusBar(context);
         adequacy = new StatusBar(context, 0, -0.09f);
         player = new Player(context);
+        player.setMovingTextures(
+                new Texture(context, "char/charly_moving_right.png", 2, 500),
+                new Texture(context, "char/charly_moving_left.png",  2, 500)
+        );
 
         addUI(authority);
         addUI(adequacy);

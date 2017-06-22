@@ -13,6 +13,7 @@ import ru.luna_koly.jetbrainsproject.GameSurface;
 import ru.luna_koly.jetbrainsproject.basic_shapes.Actionable;
 import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Texture;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 import ru.luna_koly.jetbrainsproject.dialogs.DialogActivity;
 import ru.luna_koly.jetbrainsproject.graph.TrajectoryItem;
@@ -33,13 +34,23 @@ public class Human extends SceneObject implements Actionable {
     protected String name;
     private TrajectoryItem trajectoryItem = null;
     private long lastTime = 0;
+    private vec2 lastPos = null;
+    private Texture movingRight = null;
+    private Texture movingLeft = null;
+    private Texture standing = null;
 
 
-    public Human(Context context, String name, String texturePath) {
+    public Human(Context context, String name, Texture texture) {
         super(context, 0.7f, 1.3f, GameRenderer.getTextureShaderProgram());
-        setTexture(texturePath);
+        setTexture(texture);
         moveY(-0.2f);
         this.name = name;
+        this.standing = texture;
+    }
+
+    public void setMovingTextures(Texture movingRight, Texture movingLeft) {
+        this.movingRight = movingRight;
+        this.movingLeft  = movingLeft;
     }
 
     public String askName() {
@@ -126,8 +137,29 @@ public class Human extends SceneObject implements Actionable {
             moveY((float) (SPEED * Math.sin(angle) * dt / 25f));
 
             trajectoryItem = trajectoryItem.check(pos);
+            onMove(pos);
+        } else {
+            onStop();
         }
 
         super.draw(u);
+    }
+
+    private void onStop() {
+        setTexture(standing);
+    }
+
+    private void onMove(vec2 pos) {
+        if (lastPos != null) {
+
+            if (pos.x - lastPos.x > 0 && getTexture() != movingRight) {
+                setTexture(movingRight);
+            } else if (pos.x - lastPos.x < 0 && getTexture() != movingLeft) {
+                setTexture(movingLeft);
+            }
+
+        }
+
+        lastPos = pos;
     }
 }

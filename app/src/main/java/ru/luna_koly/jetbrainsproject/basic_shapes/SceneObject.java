@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Texture;
 import ru.luna_koly.jetbrainsproject.util.FileLoader;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
 import ru.luna_koly.jetbrainsproject.util.VertexFormatter;
@@ -28,19 +29,19 @@ public class SceneObject implements Shape {
     private Context context;
     private float width, height;
     protected int program;
-    private int texture;
-    private Bitmap bitmap;
     private boolean positionChanged;
 
-    public SceneObject(Context context, ShaderProgram program, String texturePath) {
+    private Texture texture = null;
+
+
+    public SceneObject(Context context, ShaderProgram program, Texture texture) {
         this.context = context;
         this.program = program.getCurrentProgram();
-
-        this.bitmap = FileLoader.readBitmap(context, texturePath);
-        this.texture = FileLoader.bitmapToTexture(bitmap);
+        this.texture = texture;
         this.position = new vec3(0, 0, 0);
 
-        setSize(2 * bitmap.getWidth() / (float) bitmap.getHeight(), 2);
+
+        setSize(2 * texture.getWidth() / (float) texture.getHeight(), 2);
     }
 
     public SceneObject(Context context, float width, float height, ShaderProgram program) {
@@ -70,9 +71,12 @@ public class SceneObject implements Shape {
         rect.setShaderProgram(this.program);
     }
 
-    public void setTexture(String texturePath) {
-        this.bitmap = FileLoader.readBitmap(context, texturePath);
-        this.texture = FileLoader.bitmapToTexture(bitmap);
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return texture;
     }
 
     public void setPosition(vec3 position) {
@@ -123,10 +127,12 @@ public class SceneObject implements Shape {
         int uPosition = GLES20.glGetUniformLocation(program, "uPosition");
         GLES20.glUniform2f(uPosition, position.x, position.y);
 
-        // Set the active texture unit to texture unit 0.
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        // Bind the texture to this unit.
-        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
+        if (texture != null) {
+            // Set the active texture unit to texture unit 0.
+            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            // Bind the texture to this unit.
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture.getHandler());
+        }
 
         int textureHandler = GLES20.glGetUniformLocation(program, "uTextureCoord");
         GLES20.glUniform1i(textureHandler, 0);

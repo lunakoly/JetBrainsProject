@@ -21,6 +21,7 @@ import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Texture;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 import ru.luna_koly.jetbrainsproject.dialogs.Replica;
 import ru.luna_koly.jetbrainsproject.graph.Graph;
@@ -237,7 +238,7 @@ public class FileLoader {
 
         if (texturePath.length() > 0 &&
                 shaderId.length() > 0) {
-            object = new SceneObject(context, GameRenderer.getShaderProgram(shaderId), texturePath);
+            object = new SceneObject(context, GameRenderer.getShaderProgram(shaderId), new Texture(context, texturePath, 1, 1000));
         } else {
             object = new SceneObject(context, 2, 2, GameRenderer.getDefaultShaderProgram());
         }
@@ -285,7 +286,7 @@ public class FileLoader {
 
         if (texturePath.length() > 0 &&
                 name.length() > 0) {
-            human = new Human(context, name, texturePath);
+            human = new Human(context, name, new Texture(context, texturePath, 1, 1000));
             if (dx != 0) human.moveX(dx);
             if (dy != 0) human.moveY(dy);
             if (shaderId.length() > 0) human.setShaderProgram(GameRenderer.getShaderProgram(shaderId));
