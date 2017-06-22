@@ -13,7 +13,7 @@ import ru.luna_koly.jetbrainsproject.util.Uniforms;
  */
 
 public class StatusBar extends SceneObject {
-    private float status = 0.25f;   // [0; 1]
+    private float status = 0.5f;   // [0; 1]
 
 
     public StatusBar(Context context) {
