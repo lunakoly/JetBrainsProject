@@ -2,6 +2,7 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.entity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.BasicActivator;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 import ru.luna_koly.jetbrainsproject.dialogs.DialogActivity;
+import ru.luna_koly.jetbrainsproject.graph.TrajectoryItem;
+import ru.luna_koly.jetbrainsproject.util.Uniforms;
+import ru.luna_koly.jetbrainsproject.util.containers.Vector2D;
+import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
 /**
@@ -21,9 +26,13 @@ import ru.luna_koly.jetbrainsproject.util.containers.vec3;
  */
 
 public class Human extends SceneObject implements Actionable {
+    private static final float SPEED = 0.01f;
+
     private ArrayList<Actionable> results = new ArrayList<>();
 
     protected String name;
+    private TrajectoryItem trajectoryItem = null;
+    private long lastTime = 0;
 
 
     public Human(Context context, String name, String texturePath) {
@@ -91,5 +100,34 @@ public class Human extends SceneObject implements Actionable {
                 getContext().startActivity(i);
             }
         });
+    }
+
+    public void setTrajectoryItem(TrajectoryItem trajectoryItem) {
+        this.trajectoryItem = trajectoryItem;
+    }
+
+    public TrajectoryItem getTrajectoryItem() {
+        return trajectoryItem;
+    }
+
+    @Override
+    public void draw(Uniforms u) {
+        long newTime = System.currentTimeMillis();
+        if (lastTime == 0) lastTime = newTime;
+        float dt = newTime - lastTime;
+        lastTime = newTime;
+
+        if (trajectoryItem != null) {
+            vec2 pos = new vec2(-getPosition().x, getPosition().y);
+
+            double angle = Vector2D.getAngleOf2Points(pos, trajectoryItem.getPosition());
+
+            moveX((float) (SPEED * Math.cos(angle) * dt / 25f));
+            moveY((float) (SPEED * Math.sin(angle) * dt / 25f));
+
+            trajectoryItem = trajectoryItem.check(pos);
+        }
+
+        super.draw(u);
     }
 }

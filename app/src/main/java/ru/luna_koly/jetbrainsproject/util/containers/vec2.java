@@ -11,4 +11,9 @@ public class vec2 {
         this.r = this.x = x;
         this.g = this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "x = " + x + ", y = " + y;
+    }
 }

@@ -1,6 +1,7 @@
 package ru.luna_koly.jetbrainsproject.basic_shapes.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.ui.StatusBar;
 import ru.luna_koly.jetbrainsproject.graph.Graph;
 import ru.luna_koly.jetbrainsproject.graph.GraphVertex;
+import ru.luna_koly.jetbrainsproject.graph.TrajectoryItem;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
 import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
@@ -139,9 +141,11 @@ public class Scene {
         y += camera.getY();
 
         GraphVertex destination = graph.findNearestGraphPoint(new vec2(x, y));
+        vec2 playerPos = new vec2(-player.getPosition().x, player.getPosition().y);
+        GraphVertex playerNearest = graph.findNearestGraphPoint(playerPos);
 
-        //mark(destination.position);
-        putPlayer(destination.position);
+        TrajectoryItem t = graph.getPath(playerNearest, destination);
+        player.setTrajectoryItem(t);
     }
 
     private SceneObject mark(vec2 pos) {

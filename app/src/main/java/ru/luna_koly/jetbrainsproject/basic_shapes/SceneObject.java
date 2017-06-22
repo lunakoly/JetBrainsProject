@@ -32,7 +32,6 @@ public class SceneObject implements Shape {
     private Bitmap bitmap;
     private boolean positionChanged;
 
-
     public SceneObject(Context context, ShaderProgram program, String texturePath) {
         this.context = context;
         this.program = program.getCurrentProgram();
