@@ -447,6 +447,8 @@ public class FileLoader {
                         @Override
                         public void run() {
                             Player p = current.getPlayer();
+                            if (p == null) return;
+
                             vec2 pos = new vec2(-p.getPosition().x, p.getPosition().y);
 
                             if (Vector2D.getDistanceOf2Points(pos, r.position) < 0.1) {

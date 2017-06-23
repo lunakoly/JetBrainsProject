@@ -38,6 +38,9 @@ class Engine {
         surface.setEGLContextClientVersion(2);
         Log.d(TAG, "GLES20 : OK");
 
+        surface.setPreserveEGLContextOnPause(true
+        );
+
         renderer = new GameRenderer(context);
         renderer.setEngine(this);
         surface.setRenderer(renderer);
