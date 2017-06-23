@@ -8,6 +8,7 @@
     tools:context="ru.luna_koly.jetbrainsproject.dialogs.DialogActivity">
 
     <ImageView
+        android:id="@+id/background"
         android:src="@drawable/small_wallpaper_2"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"

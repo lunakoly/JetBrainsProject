@@ -8,5 +8,5 @@
     <vert id="5" pos="1 -0.4" next="4 6" />
     <vert id="6" pos="1.4 -0.4" next="5 8 7" />
         <vert id="8" pos="2 -0.1" next="6" to="algebra_cabinet 6" />
-    <vert id="7" pos="2.7 -0.4" next="6" to="palm_hall_2 0" />
+    <vert id="7" pos="2.7 -0.4" next="6" to="palm_hall_2 1" />
 </graph>

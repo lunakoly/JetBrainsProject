@@ -26,7 +26,7 @@ import ru.luna_koly.jetbrainsproject.util.containers.vec3;
  */
 
 public class Human extends SceneObject implements Actionable {
-    private static final float SPEED = 0.01f;
+    private static final float SPEED = 0.02f;
 
     private ArrayList<Actionable> results = new ArrayList<>();
 

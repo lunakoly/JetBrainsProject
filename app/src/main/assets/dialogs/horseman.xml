@@ -9,47 +9,46 @@
     <rep id="2" next="4"
         text="Hi." />
 
-
-    <rep who="Horseman" id="4" next = "5 6 7"
+    <rep who="Horseman" next = "5 6 7" id="4"
         text="It's been a long time. How are you?" />
 
-    <rep id="5" next = "8 9 10"
+    <rep next = "8 9 10" id="5"
         text="Thanks, I'm pretty well." />
 
-    <rep id="6" next = "8 9 10"
+    <rep next = "8 9 10" id="6"
         text="how are you?" />
 
-    <rep id="7" next = "8 9 10"
+    <rep next = "8 9 10" id="7"
         text="Lol stop kidding, we met two days ago))0)0)" />
 
-    <rep id="8" next = "11"
+    <rep next = "11" id="8"
         text="Lets talk about something special." />
 
-    <rep id="9" next = "12"
+    <rep next = "12" id="9"
         text="How's your daughter?" />
 
-    <rep id="10" next = "13"
+    <rep next = "13" id="10"
         text="Tell me about our lesson topic." />
 
-    <rep who="Horseman" id="11" next="14"
+    <rep who="Horseman" next="14" id="11"
         text="I'll show you Banach-Tarski Paradox in practice." />
   
-    <rep id="14" next = "15"
+    <rep next = "15" id="14"
         text="what paradox?" />
 
-    <rep who="Horseman" id="15" next="16"
+    <rep who="Horseman" next="16" id="15" 
         text="I'll show you Banach-Tarski Paradox in practice. I'll show you Banach-Tarski Paradox in practice." />
 	
-    <rep id="16" next = "8 9 10"
+    <rep next = "8 9 10" id="16"
         text="Hahaha whatever" />
 
-    <rep who="Horseman" id="12" next="8 10"
+    <rep who="Horseman" next="8 10" id="12"
         text="She graduated, thanks" />
 
-    <rep who="Horseman" id="13" next="17"
+    <rep who="Horseman" next="17" id="13"
         text="We are now studying trigonometry. Look at yellow board and learn how to count sines and cosines" />
 
-    <rep id="17" next = "18"
+    <rep next = "18" id="17"
         text="Thanks a lot! Now I know." />
 
     <rep who="Horseman" id="18" 
