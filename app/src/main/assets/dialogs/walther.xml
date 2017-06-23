@@ -1,9 +1,8 @@
-
 <?xml version="1.0" encoding="utf-8" ?>
 <dialog>
 
 
-<rep who="OBJ-ik"  next="1 2 23" id="0" 
+<rep who="Walther"  next="1 2 23" id="0"
 text="Hello. Where have you been?" />
 
 <rep next="3" id="1"
