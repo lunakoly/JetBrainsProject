@@ -14,6 +14,7 @@ import javax.microedition.khronos.opengles.GL10;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Camera;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.ShaderProgram;
+import ru.luna_koly.jetbrainsproject.basic_shapes.util.Texture;
 import ru.luna_koly.jetbrainsproject.util.Uniforms;
 import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 
@@ -25,6 +26,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "renderer";
 
     private static HashMap<String, ShaderProgram> shaderPrograms = new HashMap<>();
+    private static Texture playerStanding = null;
+    private static Texture playerMovingRight = null;
+    private static Texture playerMovingLeft = null;
 
     private Context context;
     private Scene targetScene;
@@ -51,6 +55,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
         GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         initShaderPrograms();
+        initPlayerTextures();
         Log.d(TAG, "Created & shader programs have been initialized");
 
         GameRegistry.runStartupAlgorithms();
@@ -118,5 +123,23 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 
     public static ShaderProgram getShaderProgram(String shaderId) {
         return shaderPrograms.get(shaderId);
+    }
+
+    private void initPlayerTextures() {
+        playerStanding    = new Texture(context, "char/charly_standing.png", 1, 1000);
+        playerMovingRight = new Texture(context, "char/charly_moving_right.png", 2, 500);
+        playerMovingLeft  = new Texture(context, "char/charly_moving_left.png", 2, 500);
+    }
+
+    public static Texture getPlayerStanding() {
+        return playerStanding;
+    }
+
+    public static Texture getPlayerMovingRight() {
+        return playerMovingRight;
+    }
+
+    public static Texture getPlayerMovingLeft() {
+        return playerMovingLeft;
     }
 }

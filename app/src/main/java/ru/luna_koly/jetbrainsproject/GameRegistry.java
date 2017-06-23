@@ -17,6 +17,8 @@ public class GameRegistry {
     private HashMap<String, Scene> scenes = new HashMap<>();
     private HashMap<String, Dialog> dialogs = new HashMap<>();
     private ArrayList<Runnable> startupAlgorithms = new ArrayList<>();
+    private Scene activeScene = null;
+    private Scene prevScene   = null;
 
 
     GameRegistry(Engine engine) {
@@ -43,8 +45,23 @@ public class GameRegistry {
     }
 
     public static GameRegistry runScene(Scene scene) {
+        if (lastInstance.prevScene != null) {
+            lastInstance.prevScene.removePlayerData();
+        }
+
+        scene.addPlayerData(scene);
+        lastInstance.activeScene = scene;
+        lastInstance.prevScene = scene;
         lastInstance.engine.getRenderer().setTargetScene(scene);
         return lastInstance;
+    }
+
+    public static Scene getActiveScene() {
+        return lastInstance.activeScene;
+    }
+
+    public static GameRegistry runScene(String scene) {
+        return runScene(getScene(scene));
     }
 
     static GameRegistry addStartupAlgorithm(Runnable algorithm) {

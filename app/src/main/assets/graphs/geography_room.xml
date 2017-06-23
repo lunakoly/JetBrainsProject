@@ -7,5 +7,5 @@
     <vert id="4" pos="0.3 -0.4" next="3 5" />
     <vert id="5" pos="1 -0.4" next="4 6" />
     <vert id="6" pos="1.8 -0.4" next="5 7" />
-    <vert id="7" pos="2.7 -0.4" next="6" />
+    <vert id="7" pos="2.7 -0.4" next="6" to="obj_hall 5" />
 </graph>

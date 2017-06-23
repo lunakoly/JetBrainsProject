@@ -3,10 +3,12 @@ package ru.luna_koly.jetbrainsproject.graph;
 import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 
 /**
- * Created by luna_koly on 6/22/17.
+ * Created with love by luna_koly on 6/22/17.
  */
 
 public class GraphVertex {
+    private Runnable runnable = null;
+
     public String id = "";
     public vec2 position = new vec2(0, 0);
     public String[] nextVertices = new String[0];
@@ -25,6 +27,14 @@ public class GraphVertex {
             s += nextVertices[i] + " ";
 
         return s;
+    }
+
+    public void setAction(Runnable runnable) {
+        this.runnable = runnable;
+    }
+
+    public void act() {
+        runnable.run();
     }
 
 }

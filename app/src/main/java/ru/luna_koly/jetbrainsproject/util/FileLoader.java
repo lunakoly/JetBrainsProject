@@ -20,12 +20,14 @@ import ru.luna_koly.jetbrainsproject.GameRegistry;
 import ru.luna_koly.jetbrainsproject.GameRenderer;
 import ru.luna_koly.jetbrainsproject.basic_shapes.SceneObject;
 import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Human;
+import ru.luna_koly.jetbrainsproject.basic_shapes.entity.Player;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Scene;
 import ru.luna_koly.jetbrainsproject.basic_shapes.util.Texture;
 import ru.luna_koly.jetbrainsproject.dialogs.Dialog;
 import ru.luna_koly.jetbrainsproject.dialogs.Replica;
 import ru.luna_koly.jetbrainsproject.graph.Graph;
 import ru.luna_koly.jetbrainsproject.graph.GraphVertex;
+import ru.luna_koly.jetbrainsproject.util.containers.Vector2D;
 import ru.luna_koly.jetbrainsproject.util.containers.vec2;
 import ru.luna_koly.jetbrainsproject.util.containers.vec3;
 
@@ -394,7 +396,7 @@ public class FileLoader {
                             graph.setMode(addMode(context, xpp));
                             break;
                         case "vert":
-                            graph = addVertex(context, xpp, graph);
+                            graph = addVertex(context, xpp, graph, path);
                     }
             }
 
@@ -412,9 +414,9 @@ public class FileLoader {
         return "";
     }
 
-    private static Graph addVertex(Context context, XmlPullParser xpp, Graph graph) {
+    private static Graph addVertex(Context context, XmlPullParser xpp, Graph graph, String id) {
         String[] str;
-        GraphVertex r = new GraphVertex();
+        final GraphVertex r = new GraphVertex();
 
         for (int i = 0; i < xpp.getAttributeCount(); i++) {
             switch (xpp.getAttributeName(i)) {
@@ -435,6 +437,25 @@ public class FileLoader {
                     for (int j = 0; j < str.length; j++)
                         r.nextVertices[j] = str[j];
                     break;
+
+                case "to":
+                    str = xpp.getAttributeValue(i).split(" ");
+                    final String[] finalStr = str;
+                    final Scene current = GameRegistry.getScene(id);
+
+                    current.addMovementDependency(new Runnable() {
+                        @Override
+                        public void run() {
+                            Player p = current.getPlayer();
+                            vec2 pos = new vec2(-p.getPosition().x, p.getPosition().y);
+
+                            if (Vector2D.getDistanceOf2Points(pos, r.position) < 0.1) {
+                                Scene scene = GameRegistry.getScene(finalStr[0]);
+                                GameRegistry.runScene(scene);
+                                scene.putPlayer(scene.getGraph().get(finalStr[1]).position);
+                            }
+                        }
+                    });
             }
         }
 

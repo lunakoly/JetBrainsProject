@@ -40,6 +40,7 @@ public class Scene {
 
     private ArrayList<Shape> objects = new ArrayList<>();
     private ArrayList<Shape> UIs = new ArrayList<>();
+    private ArrayList<Runnable> movementDependencies = new ArrayList<>();
 
 
     public Scene(Context context, float w, float h, float d) {
@@ -50,7 +51,6 @@ public class Scene {
 
         camera = new Camera(0, 0, 0);
         camera.restrictToScene(this);
-        addPlayerDate();
     }
 
     public Scene(Context context, ShaderProgram shaderProgram, String backgroundPath) {
@@ -60,17 +60,26 @@ public class Scene {
         cropToObject(so);
     }
 
-    private void addPlayerDate() {
+    public void addPlayerData(Scene scene) {
         authority = new StatusBar(context);
         adequacy = new StatusBar(context, 0, -0.09f);
         player = new Player(context);
         player.setMovingTextures(
-                new Texture(context, "char/charly_moving_right.png", 2, 500),
-                new Texture(context, "char/charly_moving_left.png",  2, 500)
+                GameRenderer.getPlayerMovingRight(),
+                GameRenderer.getPlayerMovingLeft()
         );
 
         addUI(authority);
         addUI(adequacy);
+        player.setScene(scene);
+    }
+
+    public void removePlayerData() {
+        UIs.clear();
+        authority = null;
+        adequacy = null;
+        player.setScene(null);
+        player = null;
     }
 
     float getWidth() {
@@ -191,5 +200,14 @@ public class Scene {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void addMovementDependency(Runnable runnable) {
+        movementDependencies.add(runnable);
+    }
+
+    public void onPlayerMove() {
+        for (Runnable r : movementDependencies)
+            r.run();
     }
 }

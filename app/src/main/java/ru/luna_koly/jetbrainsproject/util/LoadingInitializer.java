@@ -40,7 +40,9 @@ public class LoadingInitializer implements Runnable {
             e.printStackTrace();
         }
 
-        GameRegistry.runScene(GameRegistry.getScene("geography_room"));
+        Scene scene = GameRegistry.getScene("entering_hall");
+        GameRegistry.runScene(scene);
+        scene.putPlayer(scene.getGraph().get("0").position);
     }
 
     public static void loadData() {

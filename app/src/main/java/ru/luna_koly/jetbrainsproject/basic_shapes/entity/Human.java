@@ -2,7 +2,6 @@ package ru.luna_koly.jetbrainsproject.basic_shapes.entity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
@@ -161,5 +160,6 @@ public class Human extends SceneObject implements Actionable {
         }
 
         lastPos = pos;
+        getScene().onPlayerMove();
     }
 }
