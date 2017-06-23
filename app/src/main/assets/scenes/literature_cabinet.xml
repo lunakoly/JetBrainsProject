@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<scene tex="literature_cabinet" shader="texture"> 
+    <human who="Ms. Verona" tex="verona" pos="-1.0 0" shader="blink" />  
+</scene> 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dialog>
+    <rep who="Henry" id="0" next="1"
+        text="Hi!" />
+
+    <rep id="1" next="2"
+        text="Hi! " />
+
+    <rep who="Henry" id="2" next = "3"
+        text="'sough'" />
+
+    <rep id="3" next="4"
+        text="Ok. Tell me what happened" />
+
+    <rep who="Henry" id="4" next = "5 6"
+        text="Today was a normal day, until I got 1 and 2 at Physics." />
+
+    <rep id="5" next="7"
+        text="How?" />
+
+    <rep id="6" next="8"
+        text="Heh! Lol kek)) Sorry, but...you looser))" />
+
+
+    <rep who="Henry" id="8" 
+        text="Go to hell, Charly!!!" />
+
+    <rep who="Henry" id="7" next = "9"
+        text="Yesterday I slept, watched memes and today was a class work... I wasn't ready.." />
+
+    <rep id="9" next="10"
+        text="It's terrible...Stop, you owe me 200 rubles" />
+
+    <rep who="Henry" id="10" next="11"
+        text="Oh! I got a call! It is very very important, I have to answer. Se you later." />
+
+    <rep id="11" 
+        text="'Strange, strange..'" />    
+
+</dialog>
+
+
+

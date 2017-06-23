@@ -40,7 +40,7 @@ public class LoadingInitializer implements Runnable {
             e.printStackTrace();
         }
 
-        Scene scene = GameRegistry.getScene("entering_hall");
+        Scene scene = GameRegistry.getScene("entering_hall"); // entering_hall
         GameRegistry.runScene(scene);
         scene.putPlayer(scene.getGraph().get("0").position);
     }

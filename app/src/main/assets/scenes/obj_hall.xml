@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <scene tex="obj_hall" shader="texture">
-    <human who="Mr. Walther" tex="walther_hand_up" pos="2.5 0.2" shader="blink" />
+    <human who="Mr. Walther" tex="walther_hand_up" pos="1 0.2" shader="blink" />
 </scene>

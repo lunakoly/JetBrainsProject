@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<scene tex="palm_hall" shader="texture"> 
+    <human who="Henry" tex="henry" pos="1.3 0.2" shader="blink" />
+</scene> 

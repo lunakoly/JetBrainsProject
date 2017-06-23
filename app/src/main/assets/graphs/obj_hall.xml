@@ -2,9 +2,11 @@
 <graph mode="">
     <vert id="0" pos="-2.4 -0.4" next="1" to="entering_hall 6" />
     <vert id="1" pos="-1.8 -0.4" next="0 2" />
-    <vert id="2" pos="-1.2 -0.4" next="1 3" />
+    <vert id="2" pos="-1.2 -0.4" next="1 3 7" />
+        <vert id="7" pos="-1 -0.1" next="2" to="chemistry_cabinet 7" />
     <vert id="3" pos="-0.5 -0.4" next="2 4" />
     <vert id="4" pos="0.3 -0.4" next="3 5" />
-    <vert id="5" pos="1 -0.4" next="4 6" />
+    <vert id="5" pos="1 -0.4" next="4 6 8" />
     <vert id="6" pos="1.8 -0.1" next="5" to="geography_room 6" />
+    <vert id="8" pos="2.5 -0.4" next="6" to="palm_hall 1" />
 </graph>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dialog>
+    <rep who="Horseman" id="0" next="1 2 "
+        text="Hello, Charlie, come in, boy" />
+
+    <rep id="1" next="4"
+        text="Hello Mister Horseman!" />
+
+    <rep id="2" next="4"
+        text="Hi." />
+
+
+    <rep who="Horseman" id="4" next = "5 6 7"
+        text="It's been a long time. How are you?" />
+
+    <rep id="5" next = "8 9 10"
+        text="Thanks, I'm pretty well." />
+
+    <rep id="6" next = "8 9 10"
+        text="how are you?" />
+
+    <rep id="7" next = "8 9 10"
+        text="Lol stop kidding, we met two days ago))0)0)" />
+
+    <rep id="8" next = "11"
+        text="Lets talk about something special." />
+
+    <rep id="9" next = "12"
+        text="How's your daughter?" />
+
+    <rep id="10" next = "13"
+        text="Tell me about our lesson topic." />
+
+    <rep who="Horseman" id="11" next="14"
+        text="I'll show you Banach-Tarski Paradox in practice." />
+  
+    <rep id="14" next = "15"
+        text="what paradox?" />
+
+    <rep who="Horseman" id="15" next="16"
+        text="I'll show you Banach-Tarski Paradox in practice. I'll show you Banach-Tarski Paradox in practice." />
+	
+    <rep id="16" next = "8 9 10"
+        text="Hahaha whatever" />
+
+    <rep who="Horseman" id="12" next="8 10"
+        text="She graduated, thanks" />
+
+    <rep who="Horseman" id="13" next="17"
+        text="We are now studying trigonometry. Look at yellow board and learn how to count sines and cosines" />
+
+    <rep id="17" next = "18"
+        text="Thanks a lot! Now I know." />
+
+    <rep who="Horseman" id="18" 
+        text="Try some more at home and tell me tomorrow, goodbye" />
+
+
+
+
+
+</dialog>
+
+
+

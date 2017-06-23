@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dialog>
+
+<rep who="Verona" next="1" id = "0"
+text="Hello" />
+
+<rep next="2" id="1" 
+text="Hello" />
+
+<rep who="Verona" next="3" id="2"
+text="Charly, are you ready to complite the test?"  />
+
+<rep who="Verona"  next ="4 5" id = "3" 
+text="You missed the the test based on 'War and Peace' on the last week."/>
+
+<rep next="6" id="4" 
+text="Yes, I'm ready to complete it now"/>
+
+<rep next="7" id="5" 
+text="No. Can I complete the test tomorrow? (or on the next week..*means 'never'*)"/>
+
+<rep who="Verona" id="7" 
+text="Hmm..Ok. Sooner or later you must complete this test!"/>
+
+<rep who="Verona" next="8" id="6" 
+text="Good. I don't have much time. Let me test you in oral form."/>
+
+<rep who="Verona" next="9 10 11" id="8" 
+text="First question is easy. Who wrote 'War and peace'?" />
+
+<rep  next="12" id="9" 
+text="Dostoevsky"/>
+
+<rep next="23" id="10" 
+text="L.N. Tolstoy"/>
+
+<rep next="12" id="11" 
+text="I don't know"/>
+
+<rep next="12" id="28" 
+text="Me"/>
+
+<rep who="Verona" next="24 25 26 27" id="23" 
+text="Next Question. Which of the following is described in 'War and Peace'?"/>
+
+<rep next="13" id="24" 
+text="The Battle of Austerlitz"/>
+
+<rep next="12" id="25" 
+text="Operation Iskra" />
+
+<rep  next="12" id="26" 
+text="Greec-Persian wars"/>
+
+<rep next="12" id="27" 
+text="I don't know"/>
+
+<rep who="Verona" next="14 15" id="13" 
+text="Ok. Next question. The dialectic of Pierre Bezukhov's soul." />
+
+<rep  next="16" id="14" 
+text="Hmm..I saw one article..(Very very long narrative) *correct answer*"/>
+
+<rep  next="12" id="15" 
+text="I don't know"/>
+
+<rep who="Verona"  next="17" id="16" 
+text="Good! Very good!"/>                       
+<rep who="Verona" next="50" id="12" 
+text="What? That's bad. Your social elevator goes down"/>
+
+<rep who="Verona" id="50" text="Go and study War and Peace. I'm waiting for you tomorrow."/>            
+
+</dialog>
