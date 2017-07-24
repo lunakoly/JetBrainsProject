@@ -1,0 +1,12 @@
+<rep who="Gitomir" text="Yong man! Are you first time in school? Lessons started 10 minutes ago!" next="1 2" />
+	<rep who="Charly" text="At this school, I am recently studying." next="3" id="1" />
+	<rep who="Charly" text="Just one time late." next="3" id="2" />
+<rep who="Gitomir" text="You are a student, and you have responsibilities!" next="5 6" id="3" />	
+	<rep who="Charly" text="..." next="7" id="5" />
+	<rep who="Charly" text="Can I go to the lesson?!" next="7" id="6" />
+<rep who="Gitomir" text="Stop! Where's your school uniform?" next="8 9" id="7" />
+	<rep who="Charly" text="What? School uniform? The first time I've heard." next="10" id="8" />
+	<rep who="Charly" text="Hmm...at home...washable" next="11" id="9" />
+<rep who="Gitomir" text="You have big problems." next="12" id="10" />
+<rep who="Gitomir" text="Suppose I believed you." next="12" id="11" />
+<rep who="Gitomir" text="Go to the lesson!" id="12" />

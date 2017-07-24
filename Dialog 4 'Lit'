@@ -1,0 +1,23 @@
+<rep who="Liter" text="Hello" next="1" />
+<rep who="Charly" text="Hello" next="2" id="1" />
+<rep who="Liter" text="Charly, are you ready to complite the test?" next="3" id="2" />
+<rep who="Liter" text="You missed the the test for 'War and Peace' on the last week." next="4 5" id="3" />
+<rep who="Charly" text="Yes" next="6" id="4" />
+<rep who="Charly" text="No. Can I complite the test tomorrow? (or on the next week..)" next="7" id="5" />
+<rep who="Liter" text="Hmm..Ok. Sooner or later you must complete this test!" id="7" />     {Close the dialog window}
+<rep who="Liter" text="Good. I don't have mach time. Becouse I ask you." next="8" id="6" />
+<rep who="Liter" text="First question is easy. Who wrote 'War and peace'?" next="9 10 11" id="8" />
+<rep who="Charly" text="Dostoevsky" next="12" id="9" />
+<rep who="Charly" text="L.N. Tolstoy" next="23" id="10" />
+<rep who="Charly" text="I don't know" next="12" id="11" />
+<rep who="Liter" text="Next Question. The Battle of Austerlitz, Operation Iskra, Greco-Persian wars. Which of the following is described in 'War and Peace'?" next="24 25 26 27" id="23" />
+<rep who="Charly" text="The Battle of Austerlitz" next="13" id="24" />
+<rep who="Charly" text="Operation Iskra" next="12" id="25" />
+<rep who="Charly" text="Greco-Persian wars" next="12" id="26" />
+<rep who="Charly" text="I don't know" next="12" id="27" />
+<rep who="Liter" text="Ok. Next question. The dialectic of Pierre Bezukhov's soul." next="14 15" id="13" />
+<rep who="Charly" text="Hmm..I saw one article..(Very very long narrative)" next="16" id="14" />
+<rep who="Charly" text="I don't know" next="12" id="15" />
+<rep who="Liter" text="Good! Very good!" next="17" id="16" />      {Close the dialog window and + story to Diary}
+<rep who="Liter" text="What? That's bad. Your social elevator goes down" next="50" id="12" />
+<rep who="Liter" text="Go and teach. I'm waiting for you tomorrow." id="50" />            {Close the diolog window}
